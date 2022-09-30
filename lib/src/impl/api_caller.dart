@@ -524,7 +524,7 @@ class _ApiCallExecutorInternal implements _ApiCallExecutorBase {
             continue;
           }
           final ffi.Pointer<ffi.Uint8> bufferData =
-              calloc.allocate<ffi.Uint8>(buffer.length);
+              arena.allocate(buffer.length * ffi.sizeOf<ffi.Uint8>());
 
           final pointerList = bufferData.asTypedList(buffer.length);
           pointerList.setAll(0, buffer);
