@@ -453,7 +453,7 @@ class _ApiCallExecutorInternal implements _ApiCallExecutorBase {
           paramsPointerUtf8.cast<ffi.Int8>();
 
       // ffi.Pointer<ffi.Void> bufferPointer;
-      ffi.Pointer<ffi.Pointer<ffi.UintPtr>> bufferListPtr;
+      ffi.Pointer<ffi.Pointer<ffi.Void>> bufferListPtr;
       ffi.Pointer<ffi.Uint32> bufferListLengthPtr;
       int bufferLength = bufferList?.length ?? 0;
 
@@ -461,14 +461,13 @@ class _ApiCallExecutorInternal implements _ApiCallExecutorBase {
         // bufferListPtr =
         //     arena.allocate(bufferList.length * ffi.sizeOf<ffi.UintPtr>());
 
-        bufferListPtr = arena<ffi.Pointer<ffi.UintPtr>>(bufferList.length);
+        bufferListPtr = arena<ffi.Pointer<ffi.Void>>(bufferList.length);
 
         bufferListLengthPtr = arena.allocate<ffi.Uint32>(bufferList.length);
 
         for (int i = 0; i < bufferList.length; i++) {
           final bufferParam = bufferList[i];
-          bufferListPtr[i] =
-              ffi.Pointer<ffi.UintPtr>.fromAddress(bufferParam.intPtr);
+          bufferListPtr[i] = ffi.Pointer.fromAddress(bufferParam.intPtr);
           // ffi.Pointer<ffi.Uint64>.fromAddress(bufferParam.intPtr).cast();
           bufferListLengthPtr[i] = bufferParam.length;
         }
