@@ -454,20 +454,20 @@ class _ApiCallExecutorInternal implements _ApiCallExecutorBase {
 
       // ffi.Pointer<ffi.Void> bufferPointer;
       ffi.Pointer<ffi.Pointer<ffi.Void>> bufferListPtr;
-      ffi.Pointer<ffi.Uint32> bufferListLengthPtr;
+      ffi.Pointer<ffi.Uint32> bufferListLengthPtr = ffi.nullptr;
       int bufferLength = bufferList?.length ?? 0;
 
       if (bufferList != null) {
         bufferListPtr =
             arena.allocate(bufferList.length * ffi.sizeOf<ffi.UintPtr>());
 
-        bufferListLengthPtr = arena.allocate<ffi.Uint32>(bufferList.length);
+        // bufferListLengthPtr = arena.allocate<ffi.Uint32>(bufferList.length);
 
         for (int i = 0; i < bufferList.length; i++) {
           final bufferParam = bufferList[i];
           bufferListPtr[i] = ffi.Pointer.fromAddress(bufferParam.intPtr);
           // ffi.Pointer<ffi.Uint64>.fromAddress(bufferParam.intPtr).cast();
-          bufferListLengthPtr[i] = bufferParam.length;
+          // bufferListLengthPtr[i] = bufferParam.length;
         }
       } else {
         bufferListPtr = ffi.nullptr;
@@ -524,14 +524,10 @@ class _ApiCallExecutorInternal implements _ApiCallExecutorBase {
             continue;
           }
           final ffi.Pointer<ffi.Uint8> bufferData =
-              arena.allocate(1024 * 1024 * 4);
+              arena.allocate<ffi.Uint8>(buffer.length);
 
-          for (int i = 0; i < buffer.length; i++) {
-            bufferData[i] = buffer[i];
-          }
-
-          // final pointerList = bufferData.asTypedList(buffer.length);
-          // pointerList.setAll(0, buffer);
+          final pointerList = bufferData.asTypedList(buffer.length);
+          pointerList.setAll(0, buffer);
 
           buffersPtrList.add(BufferParam(bufferData.address, buffer.length));
         }
