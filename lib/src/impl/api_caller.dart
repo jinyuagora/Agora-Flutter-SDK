@@ -524,10 +524,14 @@ class _ApiCallExecutorInternal implements _ApiCallExecutorBase {
             continue;
           }
           final ffi.Pointer<ffi.Uint8> bufferData =
-              arena.allocate(buffer.length * ffi.sizeOf<ffi.Uint8>());
+              arena.allocate(1024 * 1024 * 4);
 
-          final pointerList = bufferData.asTypedList(buffer.length);
-          pointerList.setAll(0, buffer);
+          for (int i = 0; i < buffer.length; i++) {
+            bufferData[i] = buffer[i];
+          }
+
+          // final pointerList = bufferData.asTypedList(buffer.length);
+          // pointerList.setAll(0, buffer);
 
           buffersPtrList.add(BufferParam(bufferData.address, buffer.length));
         }
