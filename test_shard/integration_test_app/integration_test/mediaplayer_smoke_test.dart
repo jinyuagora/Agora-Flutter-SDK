@@ -12,7 +12,7 @@ void main() {
   generated.mediaPlayerControllerSmokeTestCases();
 
   testWidgets(
-    'registerAudioFrameObserver',
+    'registerAudioFrameObserver smoke test',
     (WidgetTester tester) async {
       app.main();
       await tester.pumpAndSettle();
@@ -76,7 +76,7 @@ void main() {
   );
 
   testWidgets(
-    'registerVideoFrameObserver',
+    'registerVideoFrameObserver smoke test',
     (WidgetTester tester) async {
       app.main();
       await tester.pumpAndSettle();

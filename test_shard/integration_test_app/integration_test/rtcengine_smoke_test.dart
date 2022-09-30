@@ -67,6 +67,43 @@ void main() {
   );
 
   testWidgets(
+    'startPreview',
+    (WidgetTester tester) async {
+      app.main();
+      await tester.pumpAndSettle();
+
+      String engineAppId = const String.fromEnvironment('TEST_APP_ID',
+          defaultValue: '<YOUR_APP_ID>');
+
+      RtcEngine rtcEngine = createAgoraRtcEngine();
+      await rtcEngine.initialize(RtcEngineContext(
+        appId: engineAppId,
+        areaCode: AreaCode.areaCodeGlob.value(),
+      ));
+
+      try {
+        await rtcEngine.enableVideo();
+        const VideoSourceType sourceType =
+            VideoSourceType.videoSourceCameraPrimary;
+        await rtcEngine.startPreview(
+          sourceType: sourceType,
+        );
+      } catch (e) {
+        if (e is! AgoraRtcException) {
+          debugPrint('[startPreview] error: ${e.toString()}');
+        }
+        expect(e is AgoraRtcException, true);
+        debugPrint(
+            '[startPreview] errorcode: ${(e as AgoraRtcException).code}');
+      }
+
+      await rtcEngine.release();
+    },
+    // startPreview will be crashed on the github action which run on windows
+    skip: Platform.isWindows,
+  );
+
+  testWidgets(
     'registerAudioEncodedFrameObserver',
     (WidgetTester tester) async {
       app.main();
