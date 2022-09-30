@@ -116,6 +116,7 @@ testWidgets('{{TEST_CASE_NAME}}', (WidgetTester tester) async {
         'setupLocalVideo',
         'getEffectDuration',
         'startPreview',
+        'stopPreview',
       ],
     ),
     TemplatedTestCase(
