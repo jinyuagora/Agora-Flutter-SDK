@@ -461,7 +461,7 @@ class _ApiCallExecutorInternal implements _ApiCallExecutorBase {
         // bufferListPtr =
         //     arena.allocate(bufferList.length * ffi.sizeOf<ffi.UintPtr>());
 
-        bufferListPtr = arena<ffi.Pointer<ffi.Void>>(bufferList.length);
+        bufferListPtr = arena.allocate(bufferList.length * ffi.sizeOf<ffi.UintPtr>());
 
         bufferListLengthPtr = arena.allocate<ffi.Uint32>(bufferList.length);
 
@@ -482,7 +482,7 @@ class _ApiCallExecutorInternal implements _ApiCallExecutorBase {
           ..ref.data = paramsPointer
           ..ref.data_size = paramsPointerUtf8Length
           ..ref.result = resultPointer
-          ..ref.buffer = bufferListPtr.cast()
+          ..ref.buffer = bufferListPtr
           ..ref.length = bufferListLengthPtr
           ..ref.buffer_count = bufferLength;
 
