@@ -15,7 +15,7 @@ void main() {
   generated.mediaEngineSmokeTestCases();
 
   testWidgets(
-    'registerAudioFrameObserver',
+    'registerAudioFrameObserver smoke test',
     (WidgetTester tester) async {
       app.main();
       await tester.pumpAndSettle();
@@ -32,14 +32,23 @@ void main() {
       final mediaEngine = rtcEngine.getMediaEngine();
       Completer<bool> eventCalledCompleter = Completer();
       final AudioFrameObserver observer = AudioFrameObserver(
-        onRecordAudioFrame: (String channelId, AudioFrame audioFrame) {},
+        onRecordAudioFrame: (String channelId, AudioFrame audioFrame) {
+          if (eventCalledCompleter.isCompleted) return;
+          eventCalledCompleter.complete(true);
+        },
         onPlaybackAudioFrame: (String channelId, AudioFrame audioFrame) {
           if (eventCalledCompleter.isCompleted) return;
           eventCalledCompleter.complete(true);
         },
-        onMixedAudioFrame: (String channelId, AudioFrame audioFrame) {},
+        onMixedAudioFrame: (String channelId, AudioFrame audioFrame) {
+          if (eventCalledCompleter.isCompleted) return;
+          eventCalledCompleter.complete(true);
+        },
         onPlaybackAudioFrameBeforeMixing:
-            (String channelId, int uid, AudioFrame audioFrame) {},
+            (String channelId, int uid, AudioFrame audioFrame) {
+          if (eventCalledCompleter.isCompleted) return;
+          eventCalledCompleter.complete(true);
+        },
       );
       mediaEngine.registerAudioFrameObserver(
         observer,
@@ -74,7 +83,7 @@ void main() {
   );
 
   testWidgets(
-    'registerVideoFrameObserver',
+    'registerVideoFrameObserver smoke test',
     (WidgetTester tester) async {
       app.main();
       await tester.pumpAndSettle();
@@ -95,6 +104,8 @@ void main() {
         onCaptureVideoFrame: (videoFrame) {
           debugPrint(
               '[onCaptureVideoFrame] videoFrame: ${videoFrame.toJson()}');
+          if (eventCalledCompleter.isCompleted) return;
+          eventCalledCompleter.complete(true);
         },
         onRenderVideoFrame:
             (String channelId, int remoteUid, VideoFrame videoFrame) {
