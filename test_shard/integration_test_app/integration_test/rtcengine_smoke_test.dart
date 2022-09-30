@@ -116,8 +116,8 @@ void main() {
         ),
       );
 
-      final remoteUser = FakeRemoteUser(rtcEngine);
-      await remoteUser.joinChannel('testonaction');
+      // final remoteUser = FakeRemoteUser(rtcEngine);
+      // await remoteUser.joinChannel('testonaction');
 
       final eventCalled = await eventCalledCompleter.future;
       expect(eventCalled, isTrue);
@@ -126,7 +126,7 @@ void main() {
         observer,
       );
 
-      await remoteUser.leaveChannel();
+      // await remoteUser.leaveChannel();
       await rtcEngine.leaveChannel();
       await rtcEngine.release();
     },

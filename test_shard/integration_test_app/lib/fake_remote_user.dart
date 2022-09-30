@@ -9,7 +9,8 @@ class FakeRemoteUser {
 
   late final MediaPlayerController _mediaPlayerController;
 
-  Future<void> joinChannel(String channelName, {int remoteUid = 67890}) async {
+  Future<void> joinChannel(
+      {String channelName = 'testonaction', int remoteUid = 67890}) async {
     // Use the the MediaPlayer to simulate a remote user
     _mediaPlayerController = await _remoteUserController(
         _rtcEngineEx, channelName,
@@ -35,6 +36,7 @@ class FakeRemoteUser {
           (MediaPlayerState state, MediaPlayerError ec) async {
         if (state == MediaPlayerState.playerStateOpenCompleted) {
           await mediaPlayerController.play();
+          await mediaPlayerController.setLoopCount(99999);
           mediaPlayerControllerPlayed.complete();
         }
       },
@@ -44,7 +46,7 @@ class FakeRemoteUser {
 
     await mediaPlayerController.open(
         url:
-            'https://agoracdn.s3.us-west-1.amazonaws.com/videos/Agora+Brand+Video+2022.mp4',
+            'https://agora-adc-artifacts.oss-cn-beijing.aliyuncs.com/video/meta_live_mpk.mov',
         startPos: 0);
 
     await mediaPlayerControllerPlayed.future;
