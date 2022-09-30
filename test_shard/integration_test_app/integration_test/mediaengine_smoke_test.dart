@@ -57,15 +57,15 @@ void main() {
         ),
       );
 
-      // final remoteUser = FakeRemoteUser(rtcEngine);
+      final remoteUser = FakeRemoteUser(rtcEngine);
 
-      // await remoteUser.joinChannel('testonaction');
+      await remoteUser.joinChannel();
 
       final eventCalled = await eventCalledCompleter.future;
       expect(eventCalled, isTrue);
 
       mediaEngine.unregisterAudioFrameObserver(observer);
-      // await remoteUser.leaveChannel();
+      await remoteUser.leaveChannel();
       await rtcEngine.leaveChannel();
 
       await mediaEngine.release();
@@ -123,15 +123,15 @@ void main() {
         ),
       );
 
-      // final remoteUser = FakeRemoteUser(rtcEngine);
+      final remoteUser = FakeRemoteUser(rtcEngine);
 
-      // await remoteUser.joinChannel('testonaction');
+      await remoteUser.joinChannel();
 
       final eventCalled = await eventCalledCompleter.future;
       expect(eventCalled, isTrue);
 
       mediaEngine.unregisterVideoFrameObserver(observer);
-      // await remoteUser.leaveChannel();
+      await remoteUser.leaveChannel();
       await rtcEngine.leaveChannel();
 
       await mediaEngine.release();

@@ -15,8 +15,6 @@ cd ${MY_PATH}/../test_shard/integration_test_app
 
 flutter packages get
 
-flutter run --dart-define=TEST_APP_ID="${TEST_APP_ID}" -d macos lib/fake_remote_user_main.dart
-
 # It's a little tricky that you should run integration test one by one on flutter macOS/Windows
 for filename in integration_test/*.dart; do
     if [[ "$filename" == *.generated.dart  ]]; then
