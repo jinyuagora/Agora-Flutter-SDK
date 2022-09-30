@@ -15,6 +15,8 @@ cd ${MY_PATH}/../test_shard/integration_test_app
 
 flutter packages get
 
+cat pubspec.lock
+
 # It's a little tricky that you should run integration test one by one on flutter macOS/Windows
 for filename in integration_test/*.dart; do
     if [[ "$filename" == *.generated.dart  ]]; then
