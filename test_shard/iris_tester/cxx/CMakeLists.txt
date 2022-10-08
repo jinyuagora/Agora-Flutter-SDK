@@ -17,6 +17,7 @@ file(GLOB SOURCES
      "${CMAKE_CURRENT_SOURCE_DIR}/src/*.h"
      "${CMAKE_CURRENT_SOURCE_DIR}/src/*.cc"
      "${CMAKE_CURRENT_SOURCE_DIR}/src/fake/*.hpp"
+     "${CMAKE_CURRENT_SOURCE_DIR}/src/fake_gen/*.hpp"
      "${CMAKE_CURRENT_SOURCE_DIR}/src/event_triggers/*.hpp"
      )
 
@@ -27,6 +28,7 @@ add_library(${LIBRARY_NAME} SHARED
 target_include_directories(${LIBRARY_NAME} PUBLIC
     "${CMAKE_CURRENT_SOURCE_DIR}/src"
     "${CMAKE_CURRENT_SOURCE_DIR}/src/fake"
+    "${CMAKE_CURRENT_SOURCE_DIR}/src/fake_gen"
     "${CMAKE_CURRENT_SOURCE_DIR}/src/event_triggers"
     "${CMAKE_CURRENT_SOURCE_DIR}/third_party/agora/rtc/include"
     "${CMAKE_CURRENT_SOURCE_DIR}/third_party/iris"
