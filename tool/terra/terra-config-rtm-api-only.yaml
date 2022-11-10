@@ -6,7 +6,7 @@ legacy_renders:
   - DartSyntaxRender
   # - DartEventHandlerParamJsonRender
   # - DartCallApiRender
-  - DartEventHandlerRender
+  - DartEventHandlerIrisMethodChannelRender
   # - DartStructToJsonSerializableRender
   # - DartCallApiEventHandlerBufferExtRender
   # - DartForwardExportRender
