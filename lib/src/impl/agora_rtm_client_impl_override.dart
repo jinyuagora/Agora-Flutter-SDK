@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:agora_rtc_engine/src/agora_rtc_engine_ext.dart';
 import 'package:agora_rtc_engine/src/agora_rtm_client.dart';
 import 'package:agora_rtc_engine/src/agora_stream_channel.dart';
 import 'package:agora_rtc_engine/src/binding/agora_rtm_client_event_impl.dart';
@@ -36,27 +37,36 @@ class RtmClientImpl extends RtmClient {
 
     if (config.eventHandler != null) {
       final eventHandlerWrapper = RtmEventHandlerWrapper(config.eventHandler!);
-      await _irisMethodChannel!.registerEventHandler(ScopedEvent(
-          ownerType: RtmClientImpl,
-          registerName: 'RtmClient_initialize',
-          unregisterName: '',
-          params: jsonEncode(param),
-          handler: eventHandlerWrapper));
-    }
+      final callApiResult = await _irisMethodChannel!.registerEventHandler(
+          ScopedEvent(
+              ownerType: RtmClientImpl,
+              registerName: 'RtmClient_initialize',
+              unregisterName: '',
+              params: jsonEncode(param),
+              handler: eventHandlerWrapper));
 
-    final callApiResult =
-        await _irisMethodChannel!.invokeMethod(apiType, jsonEncode(param));
-    if (callApiResult.irisReturnCode < 0) {
-      throw AgoraRtcException(code: callApiResult.irisReturnCode);
-    }
-    final rm = callApiResult.data;
-    if (bufferPtr != null) {
-      freePointer(bufferPtr);
-    }
-    final result = rm['result'];
+      if (callApiResult.irisReturnCode < 0) {
+        throw AgoraRtcException(code: callApiResult.irisReturnCode);
+      }
+      final rm = callApiResult.data;
 
-    if (result < 0) {
-      throw AgoraRtcException(code: result);
+      final result = rm['result'];
+
+      if (result < 0) {
+        throw AgoraRtcException(code: result);
+      }
+    } else {
+      final callApiResult = await _irisMethodChannel!
+          .invokeMethod(IrisMethodCall(apiType, jsonEncode(param)));
+      if (callApiResult.irisReturnCode < 0) {
+        throw AgoraRtcException(code: callApiResult.irisReturnCode);
+      }
+      final rm = callApiResult.data;
+      final result = rm['result'];
+
+      if (result < 0) {
+        throw AgoraRtcException(code: result);
+      }
     }
   }
 
