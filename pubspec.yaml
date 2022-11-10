@@ -15,13 +15,12 @@ dependencies:
     sdk: flutter
   json_annotation: ^4.4.0
   ffi: '>=1.1.2'
-  # iris_event: 
-  #   path: ../iris_event
+  iris_event: ^1.2.0
   async: ^2.8.2
   meta: ^1.7.0
 
   iris_method_channel:
-    path: ../iris_method_channel
+    path: ../iris_method_channel_ng/iris_method_channel
 
 dev_dependencies:
   flutter_test:

@@ -103,14 +103,14 @@ packages:
   iris_event:
     dependency: transitive
     description:
-      path: "../../iris_event"
-      relative: true
-    source: path
-    version: "2.0.0"
+      name: iris_event
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "1.2.0"
   iris_method_channel:
     dependency: transitive
     description:
-      path: "../../iris_method_channel"
+      path: "../../iris_method_channel_ng/iris_method_channel"
       relative: true
     source: path
     version: "0.0.1"

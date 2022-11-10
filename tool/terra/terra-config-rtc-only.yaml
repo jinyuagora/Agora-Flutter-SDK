@@ -4,9 +4,9 @@ language: dart
 
 legacy_renders:
   - DartSyntaxRender
-  - DartEventHandlerParamJsonRender
+  # - DartEventHandlerParamJsonRender
   - DartCallApiRender
   # - DartEventHandlerRender
-  - DartStructToJsonSerializableRender
-  - DartCallApiEventHandlerBufferExtRender
-  - DartForwardExportRender
+  # - DartStructToJsonSerializableRender
+  # - DartCallApiEventHandlerBufferExtRender
+  # - DartForwardExportRender
