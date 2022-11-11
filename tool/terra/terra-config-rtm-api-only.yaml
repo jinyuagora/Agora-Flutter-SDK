@@ -5,7 +5,7 @@ language: dart
 legacy_renders:
   - DartSyntaxRender
   # - DartEventHandlerParamJsonRender
-  # - DartCallApiRender
+  - DartCallApiIrisMethodChannelRender
   - DartEventHandlerIrisMethodChannelRender
   # - DartStructToJsonSerializableRender
   # - DartCallApiEventHandlerBufferExtRender

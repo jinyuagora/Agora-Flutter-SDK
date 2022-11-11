@@ -1,8 +1,14 @@
 import 'package:agora_rtc_engine/src/binding_forward_export.dart';
 import 'package:agora_rtc_engine/src/binding/impl_forward_export.dart';
+import 'package:iris_method_channel/iris_method_channel.dart';
 // ignore_for_file: public_member_api_docs, unused_local_variable, annotate_overrides
 
 class StreamChannelImpl implements StreamChannel {
+  StreamChannelImpl(this.irisMethodChannel);
+
+  @protected
+  final IrisMethodChannel irisMethodChannel;
+
   @protected
   Map<String, dynamic> createParams(Map<String, dynamic> param) {
     return param;
@@ -20,8 +26,8 @@ class StreamChannelImpl implements StreamChannel {
     final param = createParams({'options': options.toJson()});
     final List<Uint8List> buffers = [];
     buffers.addAll(options.collectBufferList());
-    final callApiResult = await apiCaller
-        .callIrisApi(apiType, jsonEncode(param), buffers: buffers);
+    final callApiResult = await irisMethodChannel.invokeMethod(
+        IrisMethodCall(apiType, jsonEncode(param), buffers: buffers));
     if (callApiResult.irisReturnCode < 0) {
       throw AgoraRtcException(code: callApiResult.irisReturnCode);
     }
@@ -37,8 +43,8 @@ class StreamChannelImpl implements StreamChannel {
     final apiType =
         '${isOverrideClassName ? className : 'StreamChannel'}_leave';
     final param = createParams({});
-    final callApiResult =
-        await apiCaller.callIrisApi(apiType, jsonEncode(param), buffers: null);
+    final callApiResult = await irisMethodChannel.invokeMethod(
+        IrisMethodCall(apiType, jsonEncode(param), buffers: null));
     if (callApiResult.irisReturnCode < 0) {
       throw AgoraRtcException(code: callApiResult.irisReturnCode);
     }
@@ -54,8 +60,8 @@ class StreamChannelImpl implements StreamChannel {
     final apiType =
         '${isOverrideClassName ? className : 'StreamChannel'}_getChannelName';
     final param = createParams({});
-    final callApiResult =
-        await apiCaller.callIrisApi(apiType, jsonEncode(param), buffers: null);
+    final callApiResult = await irisMethodChannel.invokeMethod(
+        IrisMethodCall(apiType, jsonEncode(param), buffers: null));
     if (callApiResult.irisReturnCode < 0) {
       throw AgoraRtcException(code: callApiResult.irisReturnCode);
     }
@@ -72,8 +78,8 @@ class StreamChannelImpl implements StreamChannel {
     final param = createParams({'topic': topic, 'options': options.toJson()});
     final List<Uint8List> buffers = [];
     buffers.addAll(options.collectBufferList());
-    final callApiResult = await apiCaller
-        .callIrisApi(apiType, jsonEncode(param), buffers: buffers);
+    final callApiResult = await irisMethodChannel.invokeMethod(
+        IrisMethodCall(apiType, jsonEncode(param), buffers: buffers));
     if (callApiResult.irisReturnCode < 0) {
       throw AgoraRtcException(code: callApiResult.irisReturnCode);
     }
@@ -93,8 +99,8 @@ class StreamChannelImpl implements StreamChannel {
         '${isOverrideClassName ? className : 'StreamChannel'}_publishTopicMessage';
     final param =
         createParams({'topic': topic, 'message': message, 'length': length});
-    final callApiResult =
-        await apiCaller.callIrisApi(apiType, jsonEncode(param), buffers: null);
+    final callApiResult = await irisMethodChannel.invokeMethod(
+        IrisMethodCall(apiType, jsonEncode(param), buffers: null));
     if (callApiResult.irisReturnCode < 0) {
       throw AgoraRtcException(code: callApiResult.irisReturnCode);
     }
@@ -110,8 +116,8 @@ class StreamChannelImpl implements StreamChannel {
     final apiType =
         '${isOverrideClassName ? className : 'StreamChannel'}_leaveTopic';
     final param = createParams({'topic': topic});
-    final callApiResult =
-        await apiCaller.callIrisApi(apiType, jsonEncode(param), buffers: null);
+    final callApiResult = await irisMethodChannel.invokeMethod(
+        IrisMethodCall(apiType, jsonEncode(param), buffers: null));
     if (callApiResult.irisReturnCode < 0) {
       throw AgoraRtcException(code: callApiResult.irisReturnCode);
     }
@@ -130,8 +136,8 @@ class StreamChannelImpl implements StreamChannel {
     final param = createParams({'topic': topic, 'options': options.toJson()});
     final List<Uint8List> buffers = [];
     buffers.addAll(options.collectBufferList());
-    final callApiResult = await apiCaller
-        .callIrisApi(apiType, jsonEncode(param), buffers: buffers);
+    final callApiResult = await irisMethodChannel.invokeMethod(
+        IrisMethodCall(apiType, jsonEncode(param), buffers: buffers));
     if (callApiResult.irisReturnCode < 0) {
       throw AgoraRtcException(code: callApiResult.irisReturnCode);
     }
@@ -150,8 +156,8 @@ class StreamChannelImpl implements StreamChannel {
     final param = createParams({'topic': topic, 'options': options.toJson()});
     final List<Uint8List> buffers = [];
     buffers.addAll(options.collectBufferList());
-    final callApiResult = await apiCaller
-        .callIrisApi(apiType, jsonEncode(param), buffers: buffers);
+    final callApiResult = await irisMethodChannel.invokeMethod(
+        IrisMethodCall(apiType, jsonEncode(param), buffers: buffers));
     if (callApiResult.irisReturnCode < 0) {
       throw AgoraRtcException(code: callApiResult.irisReturnCode);
     }
@@ -167,8 +173,8 @@ class StreamChannelImpl implements StreamChannel {
     final apiType =
         '${isOverrideClassName ? className : 'StreamChannel'}_getSubscribedUserList';
     final param = createParams({'topic': topic});
-    final callApiResult =
-        await apiCaller.callIrisApi(apiType, jsonEncode(param), buffers: null);
+    final callApiResult = await irisMethodChannel.invokeMethod(
+        IrisMethodCall(apiType, jsonEncode(param), buffers: null));
     if (callApiResult.irisReturnCode < 0) {
       throw AgoraRtcException(code: callApiResult.irisReturnCode);
     }
@@ -187,8 +193,8 @@ class StreamChannelImpl implements StreamChannel {
     final apiType =
         '${isOverrideClassName ? className : 'StreamChannel'}_release';
     final param = createParams({});
-    final callApiResult =
-        await apiCaller.callIrisApi(apiType, jsonEncode(param), buffers: null);
+    final callApiResult = await irisMethodChannel.invokeMethod(
+        IrisMethodCall(apiType, jsonEncode(param), buffers: null));
     if (callApiResult.irisReturnCode < 0) {
       throw AgoraRtcException(code: callApiResult.irisReturnCode);
     }
