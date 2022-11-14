@@ -39,6 +39,8 @@ class RtmClientImpl extends rtmc_binding.RtmClientImpl {
 
   static RtmClientImpl? _instance;
 
+  final _rtmClientImplScopedKey = const TypedScopedKey(RtmClientImpl);
+
   final ScopedObjects _scopedObjects = ScopedObjects();
 
   final DisposableScopedObjects _streamChannelObjects =
@@ -87,11 +89,11 @@ class RtmClientImpl extends rtmc_binding.RtmClientImpl {
       final eventHandlerWrapper = RtmEventHandlerWrapper(config.eventHandler!);
       final callApiResult = await irisMethodChannel.registerEventHandler(
           ScopedEvent(
-              ownerType: RtmClientImpl,
+              scopedKey: _rtmClientImplScopedKey,
               registerName: 'RtmClient_initialize',
               unregisterName: '',
-              params: jsonEncode(param),
-              handler: eventHandlerWrapper));
+              handler: eventHandlerWrapper),
+          jsonEncode(param));
 
       if (callApiResult.irisReturnCode < 0) {
         throw AgoraRtcException(code: callApiResult.irisReturnCode);
@@ -123,6 +125,7 @@ class RtmClientImpl extends rtmc_binding.RtmClientImpl {
     await _scopedObjects.clear();
 
     try {
+      await irisMethodChannel.unregisterEventHandlers(_rtmClientImplScopedKey);
       await super.release();
     } catch (e) {
       // Do nothing
