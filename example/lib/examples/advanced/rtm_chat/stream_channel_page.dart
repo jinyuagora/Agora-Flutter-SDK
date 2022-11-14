@@ -5,16 +5,16 @@ import 'package:agora_rtc_engine_example/components/log_sink.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
-/// RtmChat Example
-class RtmChat extends StatefulWidget {
-  /// Construct the [RtmChat]
-  const RtmChat({Key? key}) : super(key: key);
+/// StreamChannelPage Example
+class StreamChannelPage extends StatefulWidget {
+  /// Construct the [StreamChannelPage]
+  const StreamChannelPage({Key? key}) : super(key: key);
 
   @override
   State<StatefulWidget> createState() => _State();
 }
 
-class _State extends State<RtmChat> {
+class _State extends State<StreamChannelPage> {
   late final RtcEngine _engine;
   bool _isReadyPreview = false;
 

@@ -152,19 +152,6 @@ class RtcEngineGetUserInfoByUidJson {
 }
 
 @JsonSerializable(explicitToJson: true)
-class RtcEngineSetAdvancedAudioOptionsJson {
-  const RtcEngineSetAdvancedAudioOptionsJson(this.options);
-
-  @JsonKey(name: 'options')
-  final AdvancedAudioOptions options;
-  factory RtcEngineSetAdvancedAudioOptionsJson.fromJson(
-          Map<String, dynamic> json) =>
-      _$RtcEngineSetAdvancedAudioOptionsJsonFromJson(json);
-  Map<String, dynamic> toJson() =>
-      _$RtcEngineSetAdvancedAudioOptionsJsonToJson(this);
-}
-
-@JsonSerializable(explicitToJson: true)
 class MediaPlayerGetDurationJson {
   const MediaPlayerGetDurationJson(this.duration);
 
