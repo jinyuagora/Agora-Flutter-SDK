@@ -29,3 +29,9 @@ const int screenSharingUid = 10;
 
 /// Your string user ID
 const String stringUid = '0';
+
+String get rtmAppId {
+  // Allow pass an `appId` as an environment variable with name `TEST_APP_ID` by using --dart-define
+  return const String.fromEnvironment('RTM_APP_ID',
+      defaultValue: '<RTM_APP_ID>');
+}
