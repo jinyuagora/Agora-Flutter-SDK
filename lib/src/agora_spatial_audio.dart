@@ -2,7 +2,6 @@ import 'package:agora_rtc_engine/src/binding_forward_export.dart';
 part 'agora_spatial_audio.g.dart';
 
 /// The spatial position of the remote user or the media player.
-///
 @JsonSerializable(explicitToJson: true, includeIfNull: false)
 class RemoteVoicePositionInfo {
   /// @nodoc

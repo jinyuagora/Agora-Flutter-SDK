@@ -438,8 +438,8 @@ class MessageEvent {
   final String? channelTopic;
 
   /// @nodoc
-  @JsonKey(name: 'message')
-  final String? message;
+  @JsonKey(name: 'message', ignore: true)
+  final Uint8List? message;
 
   /// @nodoc
   @JsonKey(name: 'messageLength')

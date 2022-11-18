@@ -64,7 +64,7 @@ class RtmClientImpl extends rtmc_binding.RtmClientImpl {
       throw AgoraRtcException(code: result);
     }
 
-    return _scopedObjects.putIfAbsent(
+    final streamChannel = _streamChannelObjects.putIfAbsent<StreamChannelImpl>(
       _StreamChannelScopedKey(channelName),
       () {
         StreamChannelImpl streamChannel =
@@ -72,6 +72,14 @@ class RtmClientImpl extends rtmc_binding.RtmClientImpl {
         return streamChannel;
       },
     );
+    _scopedObjects.putIfAbsent(
+      _rtmClientImplScopedKey,
+      () {
+        return _streamChannelObjects;
+      },
+    );
+
+    return streamChannel;
   }
 
   @override
@@ -132,5 +140,6 @@ class RtmClientImpl extends rtmc_binding.RtmClientImpl {
     }
 
     await irisMethodChannel.dispose();
+    _instance = null;
   }
 }

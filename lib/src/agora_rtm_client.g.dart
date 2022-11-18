@@ -63,7 +63,6 @@ MessageEvent _$MessageEventFromJson(Map<String, dynamic> json) => MessageEvent(
           $enumDecodeNullable(_$RtmChannelTypeEnumMap, json['channelType']),
       channelName: json['channelName'] as String?,
       channelTopic: json['channelTopic'] as String?,
-      message: json['message'] as String?,
       messageLength: json['messageLength'] as int?,
       publisher: json['publisher'] as String?,
     );
@@ -80,7 +79,6 @@ Map<String, dynamic> _$MessageEventToJson(MessageEvent instance) {
   writeNotNull('channelType', _$RtmChannelTypeEnumMap[instance.channelType]);
   writeNotNull('channelName', instance.channelName);
   writeNotNull('channelTopic', instance.channelTopic);
-  writeNotNull('message', instance.message);
   writeNotNull('messageLength', instance.messageLength);
   writeNotNull('publisher', instance.publisher);
   return val;

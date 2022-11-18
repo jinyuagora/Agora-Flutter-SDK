@@ -1,10 +1,8 @@
 import 'package:agora_rtc_engine/src/binding_forward_export.dart';
 
 /// This class provides media player functions and supports multiple instances.
-///
 abstract class MediaPlayer {
   /// Gets the ID of the media player.
-  ///
   ///
   /// Returns
   /// ≥ 0: Success. The ID of the media player.< 0: Failure.
@@ -31,15 +29,12 @@ abstract class MediaPlayer {
   Future<void> play();
 
   /// Pauses the playback.
-  ///
   Future<void> pause();
 
   /// Stops playing the media track.
-  ///
   Future<void> stop();
 
   /// Resumes playing the media file.
-  ///
   Future<void> resume();
 
   /// Seeks to a new playback position.
@@ -56,13 +51,11 @@ abstract class MediaPlayer {
 
   /// Gets the duration of the media resource.
   ///
-  ///
   /// Returns
   /// The total duration (ms) of the media file.
   Future<int> getDuration();
 
   /// Gets current local playback progress.
-  ///
   ///
   /// Returns
   /// Returns the current playback progress (ms) if the call succeeds.< 0: Failure. See MediaPlayerError .
@@ -114,19 +107,16 @@ abstract class MediaPlayer {
 
   /// Gets current playback state.
   ///
-  ///
   /// Returns
   /// The current playback state. See MediaPlayerState .
   Future<MediaPlayerState> getState();
 
   /// Sets whether to mute the media file.
   ///
-  ///
   /// * [mute] Whether to mute the media file:true: Mute the media file.false: (Default) Unmute the media file.
   Future<void> mute(bool muted);
 
   /// Reports whether the media resource is muted.
-  ///
   ///
   /// Returns
   /// true: Reports whether the media resource is muted.false: Reports whether the media resource is muted.
@@ -134,12 +124,10 @@ abstract class MediaPlayer {
 
   /// Adjusts the local playback volume.
   ///
-  ///
   /// * [volume] The local playback volume, which ranges from 0 to 100:0: Mute.100: (Default) The original volume.
   Future<void> adjustPlayoutVolume(int volume);
 
   /// Gets the local playback volume.
-  ///
   ///
   /// Returns
   /// The local playback volume, which ranges from 0 to 100.0: Mute.100: (Default) The original volume.
@@ -153,29 +141,24 @@ abstract class MediaPlayer {
 
   /// Gets the volume of the media file for publishing.
   ///
-  ///
   /// Returns
   /// The remote playback volume, if the method call succeeds.< 0: Failure.
   Future<int> getPublishSignalVolume();
 
   /// Sets the view.
-  ///
   Future<void> setView(int view);
 
   /// Sets the render mode of the media player.
-  ///
   ///
   /// * [renderMode] Sets the render mode of the view. See RenderModeType .
   Future<void> setRenderMode(RenderModeType renderMode);
 
   /// Registers a media player observer.
   ///
-  ///
   /// * [observer] The player observer, listening for events during the playback. See MediaPlayerSourceObserver .
   void registerPlayerSourceObserver(MediaPlayerSourceObserver observer);
 
   /// Releases a media player observer.
-  ///
   ///
   /// * [observer] The player observer, listening for events during the playback. See MediaPlayerSourceObserver .
   void unregisterPlayerSourceObserver(MediaPlayerSourceObserver observer);
@@ -211,7 +194,6 @@ abstract class MediaPlayer {
       {required String src, required int startPos});
 
   /// Gets the number of CDN routes for the media resource.
-  ///
   Future<int> getAgoraCDNLineCount();
 
   /// Changes the CDN route for playing the media resource.
@@ -221,7 +203,6 @@ abstract class MediaPlayer {
   Future<void> switchAgoraCDNLineByIndex(int index);
 
   /// Gets the CDN routes index of the current media resource.
-  ///
   Future<int> getCurrentAgoraCDNIndex();
 
   /// Enables/Disables the automatic switch of the CDN routes for playing the media resource.
@@ -278,7 +259,10 @@ abstract class MediaPlayer {
   /// * [src] The URL of the media resource.
   Future<void> unloadSrc(String src);
 
-  /// @nodoc
+  /// Enables or disables the spatial audio effect for the media player.
+  /// After successfully setting the spatial audio effect parameters of the media player, the SDK enables the spatial audio effect for the media player, and the local user can hear the media resources with a sense of space.If you need to disable the spatial audio effect for the media player, set the params parameter to null.
+  ///
+  /// * [params] The spatial audio effect parameters of the media player. See SpatialAudioParams for details.
   Future<void> setSpatialAudioParams(SpatialAudioParams params);
 
   /// @nodoc
@@ -293,7 +277,6 @@ abstract class MediaPlayer {
 
   /// Unregisters an audio observer.
   ///
-  ///
   /// * [observer] The audio observer. See MediaPlayerAudioFrameObserver .
   void unregisterAudioFrameObserver(MediaPlayerAudioFrameObserver observer);
 
@@ -304,7 +287,6 @@ abstract class MediaPlayer {
   void registerVideoFrameObserver(MediaPlayerVideoFrameObserver observer);
 
   /// Unregisters the video frame observer.
-  ///
   ///
   /// * [observer] The video observer, reporting the reception of each video frame. See MediaPlayerVideoFrameObserver .
   void unregisterVideoFrameObserver(MediaPlayerVideoFrameObserver observer);
@@ -322,7 +304,6 @@ abstract class MediaPlayer {
 }
 
 /// This class provides methods to manage cached media files.
-///
 abstract class MediaPlayerCacheManager {
   /// Deletes all cached media files in the media player.
   /// The cached media file currently being played will not be deleted.
@@ -346,12 +327,10 @@ abstract class MediaPlayerCacheManager {
 
   /// Sets the maximum number of media files that can be cached.
   ///
-  ///
   /// * [count] The maximum number of media files that can be cached. The default value is 1,000.
   Future<void> setMaxCacheFileCount(int count);
 
   /// Sets the maximum size of the aggregate storage space for cached media files.
-  ///
   ///
   /// * [cacheSize] The maximum size (bytes) of the aggregate storage space for cached media files. The default value is 1 GB.
   Future<void> setMaxCacheFileSize(int cacheSize);
@@ -387,14 +366,12 @@ abstract class MediaPlayerCacheManager {
 
   /// Gets the number of media files that are cached.
   ///
-  ///
   /// Returns
   /// ≥ 0: The call succeeds and returns the number of media files that are cached.< 0: Failure. See MediaPlayerError .
   Future<int> getCacheFileCount();
 }
 
 /// The audio frame observer for the media player.
-///
 class MediaPlayerAudioFrameObserver {
   /// @nodoc
   const MediaPlayerAudioFrameObserver({
@@ -409,7 +386,6 @@ class MediaPlayerAudioFrameObserver {
 }
 
 /// The video frame observer for the media player.
-///
 class MediaPlayerVideoFrameObserver {
   /// @nodoc
   const MediaPlayerVideoFrameObserver({

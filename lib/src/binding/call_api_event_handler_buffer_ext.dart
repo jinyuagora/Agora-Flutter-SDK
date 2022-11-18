@@ -1432,11 +1432,24 @@ extension TopicInfoBufferExt on TopicInfo {
 extension MessageEventBufferExt on MessageEvent {
   MessageEvent fillBuffers(List<Uint8List> bufferList) {
     if (bufferList.isEmpty) return this;
-    return this;
+    Uint8List? message;
+    if (bufferList.length > 0) {
+      message = bufferList[0];
+    }
+    return MessageEvent(
+        channelType: channelType,
+        channelName: channelName,
+        channelTopic: channelTopic,
+        message: message,
+        messageLength: messageLength,
+        publisher: publisher);
   }
 
   List<Uint8List> collectBufferList() {
     final bufferList = <Uint8List>[];
+    if (message != null) {
+      bufferList.add(message!);
+    }
     return bufferList;
   }
 }
@@ -1468,11 +1481,18 @@ extension JoinChannelOptionsBufferExt on JoinChannelOptions {
 extension JoinTopicOptionsBufferExt on JoinTopicOptions {
   JoinTopicOptions fillBuffers(List<Uint8List> bufferList) {
     if (bufferList.isEmpty) return this;
-    return this;
+    Uint8List? meta;
+    if (bufferList.length > 0) {
+      meta = bufferList[0];
+    }
+    return JoinTopicOptions(qos: qos, meta: meta, metaLength: metaLength);
   }
 
   List<Uint8List> collectBufferList() {
     final bufferList = <Uint8List>[];
+    if (meta != null) {
+      bufferList.add(meta!);
+    }
     return bufferList;
   }
 }

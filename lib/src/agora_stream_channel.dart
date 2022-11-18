@@ -55,8 +55,8 @@ class JoinTopicOptions {
   final RtmMessageQos? qos;
 
   /// @nodoc
-  @JsonKey(name: 'meta')
-  final String? meta;
+  @JsonKey(name: 'meta', ignore: true)
+  final Uint8List? meta;
 
   /// @nodoc
   @JsonKey(name: 'metaLength')
@@ -131,7 +131,7 @@ abstract class StreamChannel {
 
   /// @nodoc
   Future<void> publishTopicMessage(
-      {required String topic, required String message, required int length});
+      {required String topic, required Uint8List message, required int length});
 
   /// @nodoc
   Future<void> leaveTopic(String topic);

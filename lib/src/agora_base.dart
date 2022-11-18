@@ -2,7 +2,6 @@ import 'package:agora_rtc_engine/src/binding_forward_export.dart';
 part 'agora_base.g.dart';
 
 /// The channel profile.
-///
 @JsonEnum(alwaysCreate: true)
 enum ChannelProfileType {
   /// 0: Communication. Use this profile when there are only two users in the channel.
@@ -459,7 +458,6 @@ extension ErrorCodeTypeExt on ErrorCodeType {
 }
 
 /// The operation permissions of the SDK on the audio session.
-///
 @JsonEnum(alwaysCreate: true)
 enum AudioSessionOperationRestriction {
   /// No restriction, the SDK can change the audio session.
@@ -497,7 +495,6 @@ extension AudioSessionOperationRestrictionExt
 }
 
 /// Reasons for a user being offline.
-///
 @JsonEnum(alwaysCreate: true)
 enum UserOfflineReasonType {
   /// 0: The user quits the call.
@@ -529,7 +526,6 @@ extension UserOfflineReasonTypeExt on UserOfflineReasonType {
 }
 
 /// The interface class.
-///
 @JsonEnum(alwaysCreate: true)
 enum InterfaceIdType {
   /// The AudioDeviceManager interface class.
@@ -595,7 +591,6 @@ extension InterfaceIdTypeExt on InterfaceIdType {
 }
 
 /// Network quality types.
-///
 @JsonEnum(alwaysCreate: true)
 enum QualityType {
   /// 0: The network quality is unknown.
@@ -674,7 +669,6 @@ extension FitModeTypeExt on FitModeType {
 }
 
 /// The clockwise rotation of the video.
-///
 @JsonEnum(alwaysCreate: true)
 enum VideoOrientation {
   /// 0: (Default) No rotation.
@@ -708,7 +702,6 @@ extension VideoOrientationExt on VideoOrientation {
 }
 
 /// Video frame rate.
-///
 @JsonEnum(alwaysCreate: true)
 enum FrameRate {
   /// 1: 1 fps
@@ -796,7 +789,6 @@ extension FrameHeightExt on FrameHeight {
 }
 
 /// The video frame type.
-///
 @JsonEnum(alwaysCreate: true)
 enum VideoFrameType {
   /// 0: A black frame.
@@ -838,7 +830,6 @@ extension VideoFrameTypeExt on VideoFrameType {
 }
 
 /// Video output orientation mode.
-///
 @JsonEnum(alwaysCreate: true)
 enum OrientationMode {
   /// 0: (Default) The output video always follows the orientation of the captured video. The receiver takes the rotational information passed on from the video encoder. This mode applies to scenarios where video orientation can be adjusted on the receiver.If the captured video is in landscape mode, the output video is in landscape mode.If the captured video is in portrait mode, the output video is in portrait mode.
@@ -868,7 +859,6 @@ extension OrientationModeExt on OrientationMode {
 }
 
 /// Video degradation preferences when the bandwidth is a constraint.
-///
 @JsonEnum(alwaysCreate: true)
 enum DegradationPreference {
   /// 0: (Default) Prefers to reduce the video frame rate while maintaining video quality during video encoding under limited bandwidth. This degradation preference is suitable for scenarios where video quality is prioritized.In the COMMUNICATION channel profile, the resolution of the video sent may change, so remote users need to handle this issue. See onVideoSizeChanged .
@@ -906,7 +896,6 @@ extension DegradationPreferenceExt on DegradationPreference {
 }
 
 /// The video dimension.
-///
 @JsonSerializable(explicitToJson: true, includeIfNull: false)
 class VideoDimensions {
   /// @nodoc
@@ -941,7 +930,6 @@ const defaultMinBitrate = -1;
 const defaultMinBitrateEqualToTargetBitrate = -2;
 
 /// Video codec types.
-///
 @JsonEnum(alwaysCreate: true)
 enum VideoCodecType {
   /// @nodoc
@@ -1046,7 +1034,6 @@ class SenderOptions {
 }
 
 /// The codec type of audio.
-///
 @JsonEnum(alwaysCreate: true)
 enum AudioCodecType {
   /// 1: OPUS.
@@ -1100,7 +1087,6 @@ extension AudioCodecTypeExt on AudioCodecType {
 }
 
 /// Audio encoding type.
-///
 @JsonEnum(alwaysCreate: true)
 enum AudioEncodingType {
   /// AAC encoding format, 16000 Hz sampling rate, bass quality. A file with an audio duration of 10 minutes is approximately 1.2 MB after encoding.
@@ -1162,7 +1148,6 @@ extension AudioEncodingTypeExt on AudioEncodingType {
 }
 
 /// The adaptation mode of the watermark.
-///
 @JsonEnum(alwaysCreate: true)
 enum WatermarkFitMode {
   /// Use the positionInLandscapeMode and positionInPortraitMode values you set in WatermarkOptions . The settings in WatermarkRatio are invalid.
@@ -1212,7 +1197,6 @@ class EncodedAudioFrameAdvancedSettings {
 }
 
 /// Audio information after encoding.
-///
 @JsonSerializable(explicitToJson: true, includeIfNull: false)
 class EncodedAudioFrameInfo {
   /// @nodoc
@@ -1321,7 +1305,6 @@ extension H264PacketizeModeExt on H264PacketizeMode {
 }
 
 /// The type of video streams.
-///
 @JsonEnum(alwaysCreate: true)
 enum VideoStreamType {
   /// 0: High-quality video stream.
@@ -1346,7 +1329,7 @@ extension VideoStreamTypeExt on VideoStreamType {
   }
 }
 
-/// @nodoc
+/// Video subscription options.
 @JsonSerializable(explicitToJson: true, includeIfNull: false)
 class VideoSubscriptionOptions {
   /// @nodoc
@@ -1356,7 +1339,7 @@ class VideoSubscriptionOptions {
   @JsonKey(name: 'type')
   final VideoStreamType? type;
 
-  /// @nodoc
+  /// Whether to subscribe to encoded video frames only:true: Subscribe to the encoded video data (structured data) only; the SDK does not decode or render raw video data.false: (Default) Subscribe to both raw video data and encoded video data.
   @JsonKey(name: 'encodedFrameOnly')
   final bool? encodedFrameOnly;
 
@@ -1369,7 +1352,6 @@ class VideoSubscriptionOptions {
 }
 
 /// Information about externally encoded video frames.
-///
 @JsonSerializable(explicitToJson: true, includeIfNull: false)
 class EncodedVideoFrameInfo {
   /// @nodoc
@@ -1434,7 +1416,6 @@ class EncodedVideoFrameInfo {
 }
 
 /// Video mirror mode.
-///
 @JsonEnum(alwaysCreate: true)
 enum VideoMirrorModeType {
   /// 0: (Default) The SDK determines the mirror mode.
@@ -1464,7 +1445,6 @@ extension VideoMirrorModeTypeExt on VideoMirrorModeType {
 }
 
 /// Video encoder configurations.
-///
 @JsonSerializable(explicitToJson: true, includeIfNull: false)
 class VideoEncoderConfiguration {
   /// @nodoc
@@ -1541,10 +1521,10 @@ class DataStreamConfig {
   Map<String, dynamic> toJson() => _$DataStreamConfigToJson(this);
 }
 
-/// @nodoc
+/// The mode in which the video stream is sent.
 @JsonEnum(alwaysCreate: true)
 enum SimulcastStreamMode {
-  /// @nodoc
+  /// -1: By default, the low-quality video steam is not sent; the SDK automatically switches to low-quality video stream mode after it receives a request to subscribe to a low-quality video stream.
   @JsonValue(-1)
   autoSimulcastStream,
 
@@ -1552,7 +1532,7 @@ enum SimulcastStreamMode {
   @JsonValue(0)
   disableSimulcastStrem,
 
-  /// @nodoc
+  /// 1: Always send low-quality video stream.
   @JsonValue(1)
   enableSimulcastStream,
 }
@@ -1571,7 +1551,6 @@ extension SimulcastStreamModeExt on SimulcastStreamMode {
 }
 
 /// The configuration of the low-quality video stream.
-///
 @JsonSerializable(explicitToJson: true, includeIfNull: false)
 class SimulcastStreamConfig {
   /// @nodoc
@@ -1598,7 +1577,6 @@ class SimulcastStreamConfig {
 }
 
 /// The location of the target area relative to the screen or window. If you do not set this parameter, the SDK selects the whole screen or window.
-///
 @JsonSerializable(explicitToJson: true, includeIfNull: false)
 class Rectangle {
   /// @nodoc
@@ -1656,7 +1634,6 @@ class WatermarkRatio {
 }
 
 /// Configurations of the watermark image.
-///
 @JsonSerializable(explicitToJson: true, includeIfNull: false)
 class WatermarkOptions {
   /// @nodoc
@@ -1696,7 +1673,6 @@ class WatermarkOptions {
 }
 
 /// Statistics of the channel.
-///
 @JsonSerializable(explicitToJson: true, includeIfNull: false)
 class RtcStats {
   /// @nodoc
@@ -1876,7 +1852,6 @@ class RtcStats {
 }
 
 /// The capture type of the custom video source.
-///
 @JsonEnum(alwaysCreate: true)
 enum VideoSourceType {
   /// (Default) The primary camera.
@@ -1950,7 +1925,6 @@ extension VideoSourceTypeExt on VideoSourceType {
 }
 
 /// The user role in the interactive live streaming.
-///
 @JsonEnum(alwaysCreate: true)
 enum ClientRoleType {
   /// 1: Host. A host can both send and receive streams.
@@ -1976,7 +1950,6 @@ extension ClientRoleTypeExt on ClientRoleType {
 }
 
 /// Quality change of the local video in terms of target frame rate and target bit rate since last count.
-///
 @JsonEnum(alwaysCreate: true)
 enum QualityAdaptIndication {
   /// 0: The local video quality stays the same.
@@ -2006,7 +1979,6 @@ extension QualityAdaptIndicationExt on QualityAdaptIndication {
 }
 
 /// The latency level of an audience member in interactive live streaming. This enum takes effect only when the user role is set to clientRoleAudience .
-///
 @JsonEnum(alwaysCreate: true)
 enum AudienceLatencyLevelType {
   /// 1: Low latency.
@@ -2032,7 +2004,6 @@ extension AudienceLatencyLevelTypeExt on AudienceLatencyLevelType {
 }
 
 /// The detailed options of a user.
-///
 @JsonSerializable(explicitToJson: true, includeIfNull: false)
 class ClientRoleOptions {
   /// @nodoc
@@ -2051,7 +2022,6 @@ class ClientRoleOptions {
 }
 
 /// The Quality of Experience (QoE) of the local user when receiving a remote audio stream.
-///
 @JsonEnum(alwaysCreate: true)
 enum ExperienceQualityType {
   /// 0: The QoE of the local user is good.
@@ -2077,7 +2047,6 @@ extension ExperienceQualityTypeExt on ExperienceQualityType {
 }
 
 /// Reasons why the QoE of the local user when receiving a remote audio stream is poor.
-///
 @JsonEnum(alwaysCreate: true)
 enum ExperiencePoorReason {
   /// 0: No reason, indicating a good QoE of the local user.
@@ -2115,7 +2084,6 @@ extension ExperiencePoorReasonExt on ExperiencePoorReason {
 }
 
 /// Audio statistics of the remote user.
-///
 @JsonSerializable(explicitToJson: true, includeIfNull: false)
 class RemoteAudioStats {
   /// @nodoc
@@ -2205,7 +2173,6 @@ class RemoteAudioStats {
 }
 
 /// The audio profile.
-///
 @JsonEnum(alwaysCreate: true)
 enum AudioProfileType {
   /// 0: The default audio profile.For the interactive streaming profile: A sample rate of 48 kHz, music encoding, mono, and a bitrate of up to 64 Kbps.For the communication profile: Windows: A sample rate of 16 kHz, audio encoding, mono, and a bitrate of up to 16 Kbps.Android/macOS/iOS:
@@ -2255,7 +2222,6 @@ extension AudioProfileTypeExt on AudioProfileType {
 }
 
 /// The audio scenarios.
-///
 @JsonEnum(alwaysCreate: true)
 enum AudioScenarioType {
   /// 0: (Default) Automatic scenario match, where the SDK chooses the appropriate audio quality according to the user role and audio route.
@@ -2297,7 +2263,6 @@ extension AudioScenarioTypeExt on AudioScenarioType {
 }
 
 /// The format of the video frame.
-///
 @JsonSerializable(explicitToJson: true, includeIfNull: false)
 class VideoFormat {
   /// @nodoc
@@ -2324,7 +2289,6 @@ class VideoFormat {
 }
 
 /// The content hint for screen sharing.
-///
 @JsonEnum(alwaysCreate: true)
 enum VideoContentHint {
   /// (Default) No content hint.
@@ -2354,7 +2318,6 @@ extension VideoContentHintExt on VideoContentHint {
 }
 
 /// The screen sharing scenario.
-///
 @JsonEnum(alwaysCreate: true)
 enum ScreenScenarioType {
   /// 1: (Default) Document. This scenario prioritizes the video quality of screen sharing and reduces the latency of the shared video for the receiver. If you share documents, slides, and tables, you can set this scenario.
@@ -2388,7 +2351,6 @@ extension ScreenScenarioTypeExt on ScreenScenarioType {
 }
 
 /// The brightness level of the video image captured by the local camera.
-///
 @JsonEnum(alwaysCreate: true)
 enum CaptureBrightnessLevelType {
   /// -1: The SDK does not detect the brightness level of the video image. Wait a few seconds to get the brightness level from captureBrightnessLevel in the next callback.
@@ -2422,7 +2384,6 @@ extension CaptureBrightnessLevelTypeExt on CaptureBrightnessLevelType {
 }
 
 /// The state of the local audio.
-///
 @JsonEnum(alwaysCreate: true)
 enum LocalAudioStreamState {
   /// 0: The local audio is in the initial state.
@@ -2456,7 +2417,6 @@ extension LocalAudioStreamStateExt on LocalAudioStreamState {
 }
 
 /// Local audio state error codes.
-///
 @JsonEnum(alwaysCreate: true)
 enum LocalAudioStreamError {
   /// 0: The local audio is normal.
@@ -2518,7 +2478,6 @@ extension LocalAudioStreamErrorExt on LocalAudioStreamError {
 }
 
 /// Local video state types.
-///
 @JsonEnum(alwaysCreate: true)
 enum LocalVideoStreamState {
   /// 0: The local video is in the initial state.
@@ -2552,7 +2511,6 @@ extension LocalVideoStreamStateExt on LocalVideoStreamState {
 }
 
 /// Local video state error codes.
-///
 @JsonEnum(alwaysCreate: true)
 enum LocalVideoStreamError {
   /// 0: The local video is normal.
@@ -2591,11 +2549,11 @@ enum LocalVideoStreamError {
   @JsonValue(8)
   localVideoStreamErrorDeviceNotFound,
 
-  /// 9: (macOS only) The video capture device currently in use is disconnected (such as being unplugged).
+  /// 9: (For macOS only) The video capture device currently in use is disconnected (such as being unplugged).
   @JsonValue(9)
   localVideoStreamErrorDeviceDisconnected,
 
-  /// 10: (macOS and Windows only) The SDK cannot find the video device in the video device list. Check whether the ID of the video device is valid.
+  /// 10: (For macOS and Windows only) The SDK cannot find the video device in the video device list Check whether the ID of the video device is valid.
   @JsonValue(10)
   localVideoStreamErrorDeviceInvalidId,
 
@@ -2603,15 +2561,15 @@ enum LocalVideoStreamError {
   @JsonValue(101)
   localVideoStreamErrorDeviceSystemPressure,
 
-  /// 11: (macOS only) The shared window is minimized when you call startScreenCaptureByWindowId to share a window. The SDK cannot share a minimized window. You can cancel the minimization of this window at the application layer, for example by maximizing this window.
+  /// 11: (For macOS only) The shared window is minimized when you call startScreenCaptureByWindowId to share a window. The SDK cannot share a minimized window. You can cancel the minimization of this window at the application layer, for example by maximizing this window.
   @JsonValue(11)
   localVideoStreamErrorScreenCaptureWindowMinimized,
 
-  /// 12: (macOS and Windows only) The error code indicates that a window shared by the window ID has been closed or a full-screen window shared by the window ID has exited full-screen mode. After exiting full-screen mode, remote users cannot see the shared window. To prevent remote users from seeing a black screen, Agora recommends that you immediately stop screen sharing.Common scenarios for reporting this error code:When the local user closes the shared window, the SDK reports this error code.The local user shows some slides in full-screen mode first, and then shares the windows of the slides. After the user exits full-screen mode, the SDK reports this error code.The local user watches a web video or reads a web document in full-screen mode first, and then shares the window of the web video or document. After the user exits full-screen mode, the SDK reports this error code.
+  /// 12: (For macOS and Windows only) The error code indicates that a window shared by the window ID has been closed or a full-screen window shared by the window ID has exited full-screen mode. After exiting full-screen mode, remote users cannot see the shared window. To prevent remote users from seeing a black screen, Agora recommends that you immediately stop screen sharing.Common scenarios for reporting this error code:When the local user closes the shared window, the SDK reports this error code.The local user shows some slides in full-screen mode first, and then shares the windows of the slides. After the user exits full-screen mode, the SDK reports this error code.The local user watches a web video or reads a web document in full-screen mode first, and then shares the window of the web video or document. After the user exits full-screen mode, the SDK reports this error code.
   @JsonValue(12)
   localVideoStreamErrorScreenCaptureWindowClosed,
 
-  /// 13: (Windows only) The window being shared is overlapped by another window, so the overlapped area is blacked out by the SDK during window sharing.
+  /// 13: (For Windows only) The window being shared is overlapped by another window, so the overlapped area is blacked out by the SDK during window sharing.
   @JsonValue(13)
   localVideoStreamErrorScreenCaptureWindowOccluded,
 
@@ -2634,7 +2592,6 @@ extension LocalVideoStreamErrorExt on LocalVideoStreamError {
 }
 
 /// Remote audio states.
-///
 @JsonEnum(alwaysCreate: true)
 enum RemoteAudioState {
   /// 0: The local audio is in the initial state. The SDK reports this state in the case of remoteAudioReasonLocalMuted, remoteAudioReasonRemoteMuted or remoteAudioReasonRemoteOffline.
@@ -2672,7 +2629,6 @@ extension RemoteAudioStateExt on RemoteAudioState {
 }
 
 /// The reason for the remote audio state change.
-///
 @JsonEnum(alwaysCreate: true)
 enum RemoteAudioStateReason {
   /// 0: The SDK reports this reason when the audio state changes.
@@ -2722,7 +2678,6 @@ extension RemoteAudioStateReasonExt on RemoteAudioStateReason {
 }
 
 /// The state of the remote video.
-///
 @JsonEnum(alwaysCreate: true)
 enum RemoteVideoState {
   /// 0: The remote video is in the initial state. The SDK reports this state in the case of remoteVideoStateReasonLocalMuted, remoteVideoStateReasonRemoteMuted, or remoteVideoStateReasonRemoteOffline.
@@ -2760,7 +2715,6 @@ extension RemoteVideoStateExt on RemoteVideoState {
 }
 
 /// The reason for the remote video state change.
-///
 @JsonEnum(alwaysCreate: true)
 enum RemoteVideoStateReason {
   /// 0: The SDK reports this reason when the video state changes.
@@ -2959,7 +2913,6 @@ extension RemoteVideoDownscaleLevelExt on RemoteVideoDownscaleLevel {
 }
 
 /// The volume information of users.
-///
 @JsonSerializable(explicitToJson: true, includeIfNull: false)
 class AudioVolumeInfo {
   /// @nodoc
@@ -3030,7 +2983,6 @@ class Packet {
 }
 
 /// The audio sampling rate of the stream to be pushed to the CDN.
-///
 @JsonEnum(alwaysCreate: true)
 enum AudioSampleRateType {
   /// 32000: 32 kHz
@@ -3060,7 +3012,6 @@ extension AudioSampleRateTypeExt on AudioSampleRateType {
 }
 
 /// The codec type of the output video.
-///
 @JsonEnum(alwaysCreate: true)
 enum VideoCodecTypeForStream {
   /// 1: (Default) H.264.
@@ -3086,7 +3037,6 @@ extension VideoCodecTypeForStreamExt on VideoCodecTypeForStream {
 }
 
 /// Video codec profile types.
-///
 @JsonEnum(alwaysCreate: true)
 enum VideoCodecProfileType {
   /// 66: Baseline video codec profile; generally used for video calls on mobile phones.
@@ -3116,7 +3066,6 @@ extension VideoCodecProfileTypeExt on VideoCodecProfileType {
 }
 
 /// Self-defined audio codec profile.
-///
 @JsonEnum(alwaysCreate: true)
 enum AudioCodecProfileType {
   /// 0: (Default) LC-AAC.
@@ -3146,7 +3095,6 @@ extension AudioCodecProfileTypeExt on AudioCodecProfileType {
 }
 
 /// Local audio statistics.
-///
 @JsonSerializable(explicitToJson: true, includeIfNull: false)
 class LocalAudioStats {
   /// @nodoc
@@ -3191,7 +3139,6 @@ class LocalAudioStats {
 }
 
 /// States of the Media Push.
-///
 @JsonEnum(alwaysCreate: true)
 enum RtmpStreamPublishState {
   /// 0: The Media Push has not started or has ended.
@@ -3234,7 +3181,6 @@ extension RtmpStreamPublishStateExt on RtmpStreamPublishState {
 }
 
 /// Error codes of the RTMP or RTMPS streaming.
-///
 @JsonEnum(alwaysCreate: true)
 enum RtmpStreamPublishErrorType {
   /// 0: The RTMP or RTMPS streaming publishes successfully.
@@ -3320,7 +3266,6 @@ extension RtmpStreamPublishErrorTypeExt on RtmpStreamPublishErrorType {
 }
 
 /// Events during the media push.
-///
 @JsonEnum(alwaysCreate: true)
 enum RtmpStreamingEvent {
   /// 1: An error occurs when you add a background image or a watermark image in the media push.
@@ -3427,7 +3372,6 @@ class LiveStreamAdvancedFeature {
 }
 
 /// Connection states.
-///
 @JsonEnum(alwaysCreate: true)
 enum ConnectionStateType {
   /// 1: The SDK is disconnected from the Agora edge server. The state indicates the SDK is in one of the following phases:Theinitial state before calling the joinChannel [2/2] method.The app calls the leaveChannel method.
@@ -3465,7 +3409,6 @@ extension ConnectionStateTypeExt on ConnectionStateType {
 }
 
 /// Transcoding configurations of each host.
-///
 @JsonSerializable(explicitToJson: true, includeIfNull: false)
 class TranscodingUser {
   /// @nodoc
@@ -3520,7 +3463,6 @@ class TranscodingUser {
 }
 
 /// Transcoding configurations for Media Push.
-///
 @JsonSerializable(explicitToJson: true, includeIfNull: false)
 class LiveTranscoding {
   /// @nodoc
@@ -3561,7 +3503,7 @@ class LiveTranscoding {
   @JsonKey(name: 'videoBitrate')
   final int? videoBitrate;
 
-  /// Frame rate (in fps) of the output video stream set for Media Push. The default value is 15 , and the value range is (0,30].The Agora server adjusts any value over 30 to 30.
+  /// Frame rate (fps) of the output video stream set for Media Push. The default value is 15. The value range is (0,30].The Agora server adjusts any value over 30 to 30.
   @JsonKey(name: 'videoFramerate')
   final int? videoFramerate;
 
@@ -3585,7 +3527,7 @@ class LiveTranscoding {
   @JsonKey(name: 'videoCodecType')
   final VideoCodecTypeForStream? videoCodecType;
 
-  /// The number of users in the video mixing. The value range is [0,17].
+  /// The number of users in the Media Push. The value range is [0,17].
   @JsonKey(name: 'userCount')
   final int? userCount;
 
@@ -3593,7 +3535,7 @@ class LiveTranscoding {
   @JsonKey(name: 'transcodingUsers')
   final List<TranscodingUser>? transcodingUsers;
 
-  /// Reserved property. Extra user-defined information to send SEI for the H.264/H.265 video stream to the CDN client. Maximum length: 4096 bytes. For more information on SEI, see SEI-related questions.
+  /// Reserved property. Extra user-defined information to send SEI for the H.264/H.265 video stream to the CDN live client. Maximum length: 4096 bytes. For more information on SEI, see SEI-related questions.
   @JsonKey(name: 'transcodingExtraInfo')
   final String? transcodingExtraInfo;
 
@@ -3625,7 +3567,7 @@ class LiveTranscoding {
   @JsonKey(name: 'audioBitrate')
   final int? audioBitrate;
 
-  /// The number of audio channels for Media Push. Agora recommends choosing 1 (mono), or 2 (stereo) audio channels. Special players are required if you choose 3, 4, or 5.1: (Default) Mono.2: Stereo.3: Three audio channels.4: Four audio channels.5: Five audio channels.
+  /// The number of audio channels for Media Push. Agora recommends choosing 1 (mono), or 2 (stereo) audio channels. Special players are required if you choose 3, 4, or 5.1: (Default) Mono2: Stereo.3: Three audio channels.4: Four audio channels.5: Five audio channels.
   @JsonKey(name: 'audioChannels')
   final int? audioChannels;
 
@@ -3650,7 +3592,6 @@ class LiveTranscoding {
 }
 
 /// The video streams for the video mixing on the local client.
-///
 @JsonSerializable(explicitToJson: true, includeIfNull: false)
 class TranscodingVideoStream {
   /// @nodoc
@@ -3715,7 +3656,6 @@ class TranscodingVideoStream {
 }
 
 /// The configuration of the video mixing on the local client.
-///
 @JsonSerializable(explicitToJson: true, includeIfNull: false)
 class LocalTranscoderConfiguration {
   /// @nodoc
@@ -3745,7 +3685,6 @@ class LocalTranscoderConfiguration {
 }
 
 /// Configurations of the last-mile network test.
-///
 @JsonSerializable(explicitToJson: true, includeIfNull: false)
 class LastmileProbeConfig {
   /// @nodoc
@@ -3780,7 +3719,6 @@ class LastmileProbeConfig {
 }
 
 /// The status of the last-mile probe test.
-///
 @JsonEnum(alwaysCreate: true)
 enum LastmileProbeResultState {
   /// 1: The last-mile network probe test is complete.
@@ -3810,7 +3748,6 @@ extension LastmileProbeResultStateExt on LastmileProbeResultState {
 }
 
 /// Results of the uplink or downlink last-mile network test.
-///
 @JsonSerializable(explicitToJson: true, includeIfNull: false)
 class LastmileProbeOneWayResult {
   /// @nodoc
@@ -3838,7 +3775,6 @@ class LastmileProbeOneWayResult {
 }
 
 /// Results of the uplink and downlink last-mile network tests.
-///
 @JsonSerializable(explicitToJson: true, includeIfNull: false)
 class LastmileProbeResult {
   /// @nodoc
@@ -3870,7 +3806,6 @@ class LastmileProbeResult {
 }
 
 /// Reasons causing the change of the connection state.
-///
 @JsonEnum(alwaysCreate: true)
 enum ConnectionChangedReasonType {
   /// 0: The SDK is connecting to the Agora edge server.
@@ -3972,7 +3907,6 @@ extension ConnectionChangedReasonTypeExt on ConnectionChangedReasonType {
 }
 
 /// The reason for a user role switch failure.
-///
 @JsonEnum(alwaysCreate: true)
 enum ClientRoleChangeFailedReason {
   /// 1: The number of hosts in the channel is already at the upper limit.This enumerator is reported only when the support for 128 users is enabled. The maximum number of hosts is based on the actual number of hosts configured when you enable the 128-user feature.
@@ -4091,7 +4025,6 @@ class WlAccStats {
 }
 
 /// Network type.
-///
 @JsonEnum(alwaysCreate: true)
 enum NetworkType {
   /// -1: The network type is unknown.
@@ -4136,18 +4069,18 @@ extension NetworkTypeExt on NetworkType {
   }
 }
 
-/// @nodoc
+/// Setting mode of the view.
 @JsonEnum(alwaysCreate: true)
 enum VideoViewSetupMode {
-  /// @nodoc
+  /// 0: (Default) Replaces a view.
   @JsonValue(0)
   videoViewSetupReplace,
 
-  /// @nodoc
+  /// 1: Adds a view.
   @JsonValue(1)
   videoViewSetupAdd,
 
-  /// @nodoc
+  /// 2: Deletes a view.
   @JsonValue(2)
   videoViewSetupRemove,
 }
@@ -4166,7 +4099,6 @@ extension VideoViewSetupModeExt on VideoViewSetupMode {
 }
 
 /// Attributes of video canvas object.
-///
 @JsonSerializable(explicitToJson: true, includeIfNull: false)
 class VideoCanvas {
   /// @nodoc
@@ -4210,7 +4142,7 @@ class VideoCanvas {
   @JsonKey(name: 'priv_size')
   final int? privSize;
 
-  /// The type of the video source, see VideoSourceType .
+  /// The type of the video frame, see VideoSourceType .
   @JsonKey(name: 'sourceType')
   final VideoSourceType? sourceType;
 
@@ -4231,7 +4163,6 @@ class VideoCanvas {
 }
 
 /// Image enhancement options.
-///
 @JsonSerializable(explicitToJson: true, includeIfNull: false)
 class BeautyOptions {
   /// @nodoc
@@ -4271,7 +4202,6 @@ class BeautyOptions {
 }
 
 /// The contrast level.
-///
 @JsonEnum(alwaysCreate: true)
 enum LighteningContrastLevel {
   /// 0: Low contrast level.
@@ -4301,7 +4231,6 @@ extension LighteningContrastLevelExt on LighteningContrastLevel {
 }
 
 /// The low-light enhancement options.
-///
 @JsonSerializable(explicitToJson: true, includeIfNull: false)
 class LowlightEnhanceOptions {
   /// @nodoc
@@ -4324,7 +4253,6 @@ class LowlightEnhanceOptions {
 }
 
 /// The low-light enhancement mode.
-///
 @JsonEnum(alwaysCreate: true)
 enum LowLightEnhanceMode {
   /// 0: (Default) Automatic mode. The SDK automatically enables or disables the low-light enhancement feature according to the ambient light to compensate for the lighting level or prevent overexposure, as necessary.
@@ -4350,7 +4278,6 @@ extension LowLightEnhanceModeExt on LowLightEnhanceMode {
 }
 
 /// The low-light enhancement level.
-///
 @JsonEnum(alwaysCreate: true)
 enum LowLightEnhanceLevel {
   /// 0: (Default) Promotes video quality during low-light enhancement. It processes the brightness, details, and noise of the video image. The performance consumption is moderate, the processing speed is moderate, and the overall video quality is optimal.
@@ -4376,7 +4303,6 @@ extension LowLightEnhanceLevelExt on LowLightEnhanceLevel {
 }
 
 /// Video noise reduction options.
-///
 @JsonSerializable(explicitToJson: true, includeIfNull: false)
 class VideoDenoiserOptions {
   /// @nodoc
@@ -4399,7 +4325,6 @@ class VideoDenoiserOptions {
 }
 
 /// Video noise reduction mode.
-///
 @JsonEnum(alwaysCreate: true)
 enum VideoDenoiserMode {
   /// 0: (Default) Automatic mode. The SDK automatically enables or disables the video noise reduction feature according to the ambient light.
@@ -4425,7 +4350,6 @@ extension VideoDenoiserModeExt on VideoDenoiserMode {
 }
 
 /// The video noise reduction level.
-///
 @JsonEnum(alwaysCreate: true)
 enum VideoDenoiserLevel {
   /// 0: (Default) Promotes video quality during video noise reduction. balances performance consumption and video noise reduction quality. The performance consumption is moderate, the video noise reduction speed is moderate, and the overall video quality is optimal.
@@ -4455,7 +4379,6 @@ extension VideoDenoiserLevelExt on VideoDenoiserLevel {
 }
 
 /// The color enhancement options.
-///
 @JsonSerializable(explicitToJson: true, includeIfNull: false)
 class ColorEnhanceOptions {
   /// @nodoc
@@ -4478,7 +4401,6 @@ class ColorEnhanceOptions {
 }
 
 /// The custom background image.
-///
 @JsonSerializable(explicitToJson: true, includeIfNull: false)
 class VirtualBackgroundSource {
   /// @nodoc
@@ -4510,7 +4432,6 @@ class VirtualBackgroundSource {
 }
 
 /// The type of the custom background image.
-///
 @JsonEnum(alwaysCreate: true)
 enum BackgroundSourceType {
   /// 1: (Default) The background image is a solid color.
@@ -4540,7 +4461,6 @@ extension BackgroundSourceTypeExt on BackgroundSourceType {
 }
 
 /// The degree of blurring applied to the custom background image.
-///
 @JsonEnum(alwaysCreate: true)
 enum BackgroundBlurDegree {
   /// 1: The degree of blurring applied to the custom background image is low. The user can almost see the background clearly.
@@ -4570,7 +4490,6 @@ extension BackgroundBlurDegreeExt on BackgroundBlurDegree {
 }
 
 /// Processing properties for background images.
-///
 @JsonSerializable(explicitToJson: true, includeIfNull: false)
 class SegmentationProperty {
   /// @nodoc
@@ -4593,7 +4512,6 @@ class SegmentationProperty {
 }
 
 /// The type of algorithms to user for background processing.
-///
 @JsonEnum(alwaysCreate: true)
 enum SegModelType {
   /// 1: (Default) Use the algorithm suitable for all scenarios.
@@ -4619,7 +4537,6 @@ extension SegModelTypeExt on SegModelType {
 }
 
 /// The options for SDK preset voice beautifier effects.
-///
 @JsonEnum(alwaysCreate: true)
 enum VoiceBeautifierPreset {
   /// Turn off voice beautifier effects and use the original voice.
@@ -4791,7 +4708,6 @@ extension AudioEffectPresetExt on AudioEffectPreset {
 }
 
 /// The options for SDK preset voice conversion effects.
-///
 @JsonEnum(alwaysCreate: true)
 enum VoiceConversionPreset {
   /// Turn off voice conversion effects and use the original voice.
@@ -4829,7 +4745,6 @@ extension VoiceConversionPresetExt on VoiceConversionPreset {
 }
 
 /// Screen sharing configurations.
-///
 @JsonSerializable(explicitToJson: true, includeIfNull: false)
 class ScreenCaptureParameters {
   /// @nodoc
@@ -4845,11 +4760,11 @@ class ScreenCaptureParameters {
       this.highLightColor,
       this.enableHighLight});
 
-  /// The maximum dimensions of encoding the shared region. If the screen dimensions are different from the value of this parameter, Agora applies the following strategies for encoding. Suppose dimensions is set to 1920 x 1080:If the value of the screen dimensions is lower than that of dimensions, for example, 1000 x 1000 pixels, the SDK uses 1000 x 1000 pixels for encoding.If the value of the screen dimensions is higher than that of dimensions, for example, 2000 x 1500, the SDK uses the maximum value under dimensions with the aspect ratio of the screen dimension (4:3) for encoding, that is, 1440 x 1080.
+  /// The maximum dimensions to encode the shared region. VideoDimensions . The default value is 1920 × 1080, that is, 2,073,600 pixels. Agora uses the value of this parameter to calculate the charges.If the screen dimensions are different from the value of this parameter, Agora applies the following strategies for encoding. Suppose dimensions is set to 1920 × 1080:If the value of the screen dimensions is lower than that of dimensions, for example, 1000 × 1000 pixels, the SDK uses the screen dimensions, that is, 1000 × 1000 pixels, for encoding.If the value of the screen dimensions is higher than that of dimensions, for example, 2000 × 1500, the SDK uses the maximum value under dimensions with the aspect ratio of the screen dimension (4:3) for encoding, that is, 1440 × 1080.
   @JsonKey(name: 'dimensions')
   final VideoDimensions? dimensions;
 
-  /// The frame rate of the shared region. The frame rate (fps) of the shared region. The default value is 5. We do not recommend setting this to a value greater than 15.
+  /// The frame rate of the shared region. The frame rate (fps) of the shared region. The default value is 5. Agora does not recommend setting this to a value greater than 15.
   @JsonKey(name: 'frameRate')
   final int? frameRate;
 
@@ -4861,7 +4776,7 @@ class ScreenCaptureParameters {
   @JsonKey(name: 'captureMouseCursor')
   final bool? captureMouseCursor;
 
-  /// Whether to bring the window to the front when calling the startScreenCaptureByWindowId method to share it:true:Bring the window to the front.false: (Default) Do not bring the window to the front.
+  /// Whether to bring the window to the front when calling the startScreenCaptureByWindowId method to share it:true: Bring the window to the front.false: (Default) Do not bring the window to the front.
   @JsonKey(name: 'windowFocus')
   final bool? windowFocus;
 
@@ -4869,19 +4784,19 @@ class ScreenCaptureParameters {
   @JsonKey(name: 'excludeWindowList')
   final List<int>? excludeWindowList;
 
-  /// The number of windows to be blocked.
+  /// The number of windows to be excluded.On the Windows platform, the maximum value of this parameter is 24; if this value is exceeded, excluding the window fails.
   @JsonKey(name: 'excludeWindowCount')
   final int? excludeWindowCount;
 
-  /// (For macOS only) The width (px) of the border. The default value is 5, and the value range is (0, 50].This parameter only takes effect when highLighted is set to true.
+  /// The width (px) of the border. The default value is 5, and the value range is (0, 50].This parameter only takes effect when highLighted is set to true.
   @JsonKey(name: 'highLightWidth')
   final int? highLightWidth;
 
-  /// (For macOS only) The color of the border in RGBA format. The default value is 0xFF8CBF26.On macOS, COLOR_CLASS refers to NSColor.
+  /// On macOS, COLOR_CLASS refers to NSColor.
   @JsonKey(name: 'highLightColor')
   final int? highLightColor;
 
-  /// (For macOS only)Whether to place a border around the shared window or screen:true: Place a border.false: (Default) Do not place a border.When you share a part of a window or screen, the SDK places a border around the entire window or screen if you set this parameter to true.
+  /// Whether to place a border around the shared window or screen:true: Place a border.false: (Default) Do not place a border.When you share a part of a window or screen, the SDK places a border around the entire window or screen if you set this parameter to true.
   @JsonKey(name: 'enableHighLight')
   final bool? enableHighLight;
 
@@ -4894,7 +4809,6 @@ class ScreenCaptureParameters {
 }
 
 /// Recording quality.
-///
 @JsonEnum(alwaysCreate: true)
 enum AudioRecordingQualityType {
   /// 0: Low quality. The sample rate is 32 kHz, and the file size is around 1.2 MB after 10 minutes of recording.
@@ -4928,7 +4842,6 @@ extension AudioRecordingQualityTypeExt on AudioRecordingQualityType {
 }
 
 /// Recording content. Set in startAudioRecording .
-///
 @JsonEnum(alwaysCreate: true)
 enum AudioFileRecordingType {
   /// 1: Only records the audio of the local user.
@@ -4958,7 +4871,6 @@ extension AudioFileRecordingTypeExt on AudioFileRecordingType {
 }
 
 /// Audio profile.
-///
 @JsonEnum(alwaysCreate: true)
 enum AudioEncodedFrameObserverPosition {
   /// 1: Only records the audio of the local user.
@@ -4988,7 +4900,6 @@ extension AudioEncodedFrameObserverPositionExt
 }
 
 /// Recording configuration.
-///
 @JsonSerializable(explicitToJson: true, includeIfNull: false)
 class AudioRecordingConfiguration {
   /// @nodoc
@@ -5035,7 +4946,6 @@ class AudioRecordingConfiguration {
 }
 
 /// Observer settings for encoded audio.
-///
 @JsonSerializable(explicitToJson: true, includeIfNull: false)
 class AudioEncodedFrameObserverConfig {
   /// @nodoc
@@ -5059,7 +4969,6 @@ class AudioEncodedFrameObserverConfig {
 }
 
 /// The encoded audio observer.
-///
 class AudioEncodedFrameObserver {
   /// @nodoc
   const AudioEncodedFrameObserver({
@@ -5106,7 +5015,6 @@ class AudioEncodedFrameObserver {
 }
 
 /// The region for connection, which is the region where the server the SDK connects to is located.
-///
 @JsonEnum(alwaysCreate: true)
 enum AreaCode {
   /// Mainland China.
@@ -5197,7 +5105,6 @@ extension AreaCodeExExt on AreaCodeEx {
 }
 
 /// The error code of the channel media relay.
-///
 @JsonEnum(alwaysCreate: true)
 enum ChannelMediaRelayError {
   /// 0: No error.
@@ -5263,7 +5170,6 @@ extension ChannelMediaRelayErrorExt on ChannelMediaRelayError {
 }
 
 /// The event code of channel media relay.
-///
 @JsonEnum(alwaysCreate: true)
 enum ChannelMediaRelayEvent {
   /// 0: The user disconnects from the server due to a poor network connection.
@@ -5298,7 +5204,7 @@ enum ChannelMediaRelayEvent {
   @JsonValue(7)
   relayEventPacketUpdateDestChannel,
 
-  /// 8: The destination channel update fails due to internal reasons.
+  /// @nodoc
   @JsonValue(8)
   relayEventPacketUpdateDestChannelRefused,
 
@@ -5345,7 +5251,6 @@ extension ChannelMediaRelayEventExt on ChannelMediaRelayEvent {
 }
 
 /// The state code of the channel media relay.
-///
 @JsonEnum(alwaysCreate: true)
 enum ChannelMediaRelayState {
   /// 0: The initial state. After you successfully stop the channel media relay by calling stopChannelMediaRelay , the onChannelMediaRelayStateChanged callback returns this state.
@@ -5378,8 +5283,7 @@ extension ChannelMediaRelayStateExt on ChannelMediaRelayState {
   }
 }
 
-/// The definition of ChannelMediaInfo.
-///
+/// Channel media information.
 @JsonSerializable(explicitToJson: true, includeIfNull: false)
 class ChannelMediaInfo {
   /// @nodoc
@@ -5405,23 +5309,22 @@ class ChannelMediaInfo {
   Map<String, dynamic> toJson() => _$ChannelMediaInfoToJson(this);
 }
 
-/// The definition of ChannelMediaRelayConfiguration.
-///
+/// Configuration information of relaying media streams across channels.
 @JsonSerializable(explicitToJson: true, includeIfNull: false)
 class ChannelMediaRelayConfiguration {
   /// @nodoc
   const ChannelMediaRelayConfiguration(
       {this.srcInfo, this.destInfos, this.destCount});
 
-  /// The information of the source channel ChannelMediaInfo . It contains the following members:channelName: The name of the source channel. The default value is NULL, which means the SDK applies the name of the current channel.uid: The unique ID to identify the relay stream in the source channel. The default value is 0, which means the SDK generates a random uid. You must set it as 0.token: The token for joining the source channel. It is generated with the channelName and uid you set in srcInfo.If you have not enabled the App Certificate, set this parameter as the default value NULL, which means the SDK applies the App ID.If you have enabled the App Certificate, you must use the token generated with the channelName and uid, and the uid must be set as 0.
+  /// @nodoc
   @JsonKey(name: 'srcInfo')
   final ChannelMediaInfo? srcInfo;
 
-  /// The information of the destination channel ChannelMediaInfo. It contains the following members:channelName: The name of the destination channel.uid: The unique ID to identify the relay stream in the destination channel. The value ranges from 0 to (232-1). To avoid UID conflicts, this UID must be different from any other UID in the destination channel. The default value is 0, which means the SDK generates a random UID. Do not set this parameter as the UID of the host in the destination channel, and ensure that this UID is different from any other UID in the channel.token: The token for joining the destination channel. It is generated with the channelName and uid you set in destInfos.If you have not enabled the App Certificate, set this parameter as the default value NULL, which means the SDK applies the App ID.If you have enabled the App Certificate, you must use the token generated with the channelName and uid.
+  /// @nodoc
   @JsonKey(name: 'destInfos')
   final List<ChannelMediaInfo>? destInfos;
 
-  /// The number of destination channels. The default value is 0, and the value range is from 0 to 4. Ensure that the value of this parameter corresponds to the number of ChannelMediaInfo structs you define in destInfo.
+  /// @nodoc
   @JsonKey(name: 'destCount')
   final int? destCount;
 
@@ -5434,7 +5337,6 @@ class ChannelMediaRelayConfiguration {
 }
 
 /// The uplink network information.
-///
 @JsonSerializable(explicitToJson: true, includeIfNull: false)
 class UplinkNetworkInfo {
   /// @nodoc
@@ -5580,7 +5482,6 @@ extension EncryptionModeExt on EncryptionMode {
 }
 
 /// Built-in encryption configurations.
-///
 @JsonSerializable(explicitToJson: true, includeIfNull: false)
 class EncryptionConfig {
   /// @nodoc
@@ -5608,7 +5509,6 @@ class EncryptionConfig {
 }
 
 /// Encryption error type.
-///
 @JsonEnum(alwaysCreate: true)
 enum EncryptionErrorType {
   /// 0: Internal reason.
@@ -5667,7 +5567,6 @@ extension UploadErrorReasonExt on UploadErrorReason {
 }
 
 /// The type of the device permission.
-///
 @JsonEnum(alwaysCreate: true)
 enum PermissionType {
   /// 0: Permission for the audio capture device.
@@ -5697,7 +5596,6 @@ extension PermissionTypeExt on PermissionType {
 }
 
 /// The maximum length of the user account.
-///
 @JsonEnum(alwaysCreate: true)
 enum MaxUserAccountLengthType {
   /// The maximum length of the user account is 256 bytes.
@@ -5719,7 +5617,6 @@ extension MaxUserAccountLengthTypeExt on MaxUserAccountLengthType {
 }
 
 /// The subscribing state.
-///
 @JsonEnum(alwaysCreate: true)
 enum StreamSubscribeState {
   /// 0: The initial publishing state after joining the channel.
@@ -5753,7 +5650,6 @@ extension StreamSubscribeStateExt on StreamSubscribeState {
 }
 
 /// The publishing state.
-///
 @JsonEnum(alwaysCreate: true)
 enum StreamPublishState {
   /// 0: The initial publishing state after joining the channel.
@@ -5787,7 +5683,6 @@ extension StreamPublishStateExt on StreamPublishState {
 }
 
 /// The configuration of the audio and video call loop test.
-///
 @JsonSerializable(explicitToJson: true, includeIfNull: false)
 class EchoTestConfiguration {
   /// @nodoc
@@ -5827,7 +5722,6 @@ class EchoTestConfiguration {
 }
 
 /// The information of the user.
-///
 @JsonSerializable(explicitToJson: true, includeIfNull: false)
 class UserInfo {
   /// @nodoc
@@ -5850,7 +5744,6 @@ class UserInfo {
 }
 
 /// The audio filter of in-ear monitoring.
-///
 @JsonEnum(alwaysCreate: true)
 enum EarMonitoringFilterType {
   /// 1<<0: Do not add an audio filter to the in-ear monitor.
@@ -5921,7 +5814,6 @@ extension ThreadPriorityTypeExt on ThreadPriorityType {
 }
 
 /// The video configuration for the shared screen stream.
-///
 @JsonSerializable(explicitToJson: true, includeIfNull: false)
 class ScreenVideoParameters {
   /// @nodoc
@@ -5981,7 +5873,6 @@ class ScreenAudioParameters {
 }
 
 /// Screen sharing configurations.
-///
 @JsonSerializable(explicitToJson: true, includeIfNull: false)
 class ScreenCaptureParameters2 {
   /// @nodoc
@@ -6015,7 +5906,7 @@ class ScreenCaptureParameters2 {
   Map<String, dynamic> toJson() => _$ScreenCaptureParameters2ToJson(this);
 }
 
-/// @nodoc
+/// The spatial audio parameters.
 @JsonSerializable(explicitToJson: true, includeIfNull: false)
 class SpatialAudioParams {
   /// @nodoc

@@ -155,11 +155,11 @@ class _State extends State<StreamChannelPage> {
                   flex: 1,
                   child: ElevatedButton(
                     onPressed: () {
-                      _streamChannel.publishTopicMessage(
-                        topic: _topicController.text,
-                        message: _topicMessageController.text,
-                        length: _topicMessageController.text.length,
-                      );
+                      // _streamChannel.publishTopicMessage(
+                      //   topic: _topicController.text,
+                      //   message: _topicMessageController.text,
+                      //   length: _topicMessageController.text.length,
+                      // );
                     },
                     child: Text('Send topic message'),
                   ),

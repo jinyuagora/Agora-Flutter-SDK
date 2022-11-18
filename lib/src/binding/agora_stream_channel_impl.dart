@@ -93,14 +93,15 @@ class StreamChannelImpl implements StreamChannel {
   @override
   Future<void> publishTopicMessage(
       {required String topic,
-      required String message,
+      required Uint8List message,
       required int length}) async {
     final apiType =
         '${isOverrideClassName ? className : 'StreamChannel'}_publishTopicMessage';
-    final param =
-        createParams({'topic': topic, 'message': message, 'length': length});
+    final param = createParams({'topic': topic, 'length': length});
+    final List<Uint8List> buffers = [];
+    buffers.add(message);
     final callApiResult = await irisMethodChannel.invokeMethod(
-        IrisMethodCall(apiType, jsonEncode(param), buffers: null));
+        IrisMethodCall(apiType, jsonEncode(param), buffers: buffers));
     if (callApiResult.irisReturnCode < 0) {
       throw AgoraRtcException(code: callApiResult.irisReturnCode);
     }

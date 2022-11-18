@@ -29,7 +29,6 @@ Map<String, dynamic> _$JoinChannelOptionsToJson(JoinChannelOptions instance) {
 JoinTopicOptions _$JoinTopicOptionsFromJson(Map<String, dynamic> json) =>
     JoinTopicOptions(
       qos: $enumDecodeNullable(_$RtmMessageQosEnumMap, json['qos']),
-      meta: json['meta'] as String?,
       metaLength: json['metaLength'] as int?,
     );
 
@@ -43,7 +42,6 @@ Map<String, dynamic> _$JoinTopicOptionsToJson(JoinTopicOptions instance) {
   }
 
   writeNotNull('qos', _$RtmMessageQosEnumMap[instance.qos]);
-  writeNotNull('meta', instance.meta);
   writeNotNull('metaLength', instance.metaLength);
   return val;
 }

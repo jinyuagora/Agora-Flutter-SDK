@@ -157,19 +157,6 @@ Map<String, dynamic> _$RtcEngineGetUserInfoByUidJsonToJson(
       'userInfo': instance.userInfo.toJson(),
     };
 
-RtcEngineSetAdvancedAudioOptionsJson
-    _$RtcEngineSetAdvancedAudioOptionsJsonFromJson(Map<String, dynamic> json) =>
-        RtcEngineSetAdvancedAudioOptionsJson(
-          AdvancedAudioOptions.fromJson(
-              json['options'] as Map<String, dynamic>),
-        );
-
-Map<String, dynamic> _$RtcEngineSetAdvancedAudioOptionsJsonToJson(
-        RtcEngineSetAdvancedAudioOptionsJson instance) =>
-    <String, dynamic>{
-      'options': instance.options.toJson(),
-    };
-
 MediaPlayerGetDurationJson _$MediaPlayerGetDurationJsonFromJson(
         Map<String, dynamic> json) =>
     MediaPlayerGetDurationJson(
