@@ -1,10 +1,9 @@
 import 'package:agora_rtc_engine/src/binding/agora_stream_channel_impl.dart'
     as sci_binding;
-import 'package:agora_rtc_engine/src/binding_forward_export.dart';
 import 'package:iris_method_channel/iris_method_channel.dart';
 
 class StreamChannelImpl extends sci_binding.StreamChannelImpl
-    with DisposableObject {
+    with ScopedDisposableObjectMixin {
   StreamChannelImpl(IrisMethodChannel irisMethodChannel, this._channelName)
       : super(irisMethodChannel);
 
@@ -24,6 +23,7 @@ class StreamChannelImpl extends sci_binding.StreamChannelImpl
     }
 
     _released = true;
+    markDisposed();
     return super.release();
   }
 

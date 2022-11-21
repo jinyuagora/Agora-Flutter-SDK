@@ -11,6 +11,7 @@ part of 'agora_rtm_client.dart';
 RtmConfig _$RtmConfigFromJson(Map<String, dynamic> json) => RtmConfig(
       appId: json['appId'] as String?,
       userId: json['userId'] as String?,
+      useStringUserId: json['useStringUserId'] as bool?,
       logConfig: json['logConfig'] == null
           ? null
           : LogConfig.fromJson(json['logConfig'] as Map<String, dynamic>),
@@ -27,6 +28,7 @@ Map<String, dynamic> _$RtmConfigToJson(RtmConfig instance) {
 
   writeNotNull('appId', instance.appId);
   writeNotNull('userId', instance.userId);
+  writeNotNull('useStringUserId', instance.useStringUserId);
   writeNotNull('logConfig', instance.logConfig?.toJson());
   return val;
 }

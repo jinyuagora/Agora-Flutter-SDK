@@ -6,6 +6,7 @@ import 'package:agora_rtc_engine/src/agora_stream_channel.dart';
 import 'package:agora_rtc_engine/src/binding/agora_rtm_client_event_impl.dart';
 import 'package:agora_rtc_engine/src/binding/agora_rtm_client_impl.dart'
     as rtmc_binding;
+import 'package:agora_rtc_engine/src/binding_forward_export.dart';
 import 'package:iris_method_channel/iris_method_channel.dart';
 import 'package:agora_rtc_engine/src/impl/agora_stream_channel_impl_override.dart';
 
@@ -132,11 +133,12 @@ class RtmClientImpl extends rtmc_binding.RtmClientImpl {
   Future<void> release() async {
     await _scopedObjects.clear();
 
+    await irisMethodChannel.unregisterEventHandlers(_rtmClientImplScopedKey);
+
     try {
-      await irisMethodChannel.unregisterEventHandlers(_rtmClientImplScopedKey);
       await super.release();
     } catch (e) {
-      // Do nothing
+      debugPrint('RtmClient release error: ${e.toString()}');
     }
 
     await irisMethodChannel.dispose();

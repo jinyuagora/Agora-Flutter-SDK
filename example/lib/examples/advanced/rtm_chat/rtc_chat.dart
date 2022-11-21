@@ -5,7 +5,6 @@ import 'package:agora_rtc_engine/agora_rtc_engine.dart';
 import 'package:agora_rtc_engine_example/config/agora.config.dart' as config;
 import 'package:agora_rtc_engine_example/components/example_actions_widget.dart';
 import 'package:agora_rtc_engine_example/components/log_sink.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -26,7 +25,7 @@ class StreamChannelInfo {
   final Set<String> joinedTopic;
   final Set<String> subscribeTopic;
   final Set<String> userList;
-  final List<String> receivedMessages;
+  final List<MessageEvent> receivedMessages;
 
   StreamChannelInfo copyWith({
     String? channelName,
@@ -35,7 +34,7 @@ class StreamChannelInfo {
     Set<String>? joinedTopic,
     Set<String>? subscribeTopic,
     Set<String>? userList,
-    List<String>? receivedMessages,
+    List<MessageEvent>? receivedMessages,
   }) {
     return StreamChannelInfo(
       channelName ?? this.channelName,
@@ -80,7 +79,7 @@ class StreamChannelInfoMap
     Set<String>? joinedTopic,
     Set<String>? subscribeTopic,
     Set<String>? userList,
-    List<String>? receivedMessages,
+    List<MessageEvent>? receivedMessages,
   }) {
     final pre = state;
     final preInfo = state[channelName]!;
@@ -97,7 +96,9 @@ class StreamChannelInfoMap
 }
 
 class RtmChatModel {
-  RtmChatModel();
+  RtmChatModel(this.ref);
+
+  final WidgetRef ref;
 
   final streamChannelInfoListProvider = StateNotifierProvider<
       StreamChannelInfoMap, Map<String, StreamChannelInfo>>((ref) {
@@ -106,10 +107,47 @@ class RtmChatModel {
 
   final isRtmClientInit = StateProvider<bool>((_) => false);
   void setRtmClientInit(bool isInit) {
-    isRtmClientInit.overrideWith((ref) => isInit);
+    ref.read(isRtmClientInit.notifier).state = true;
+  }
+
+  StreamChannelInfo getStreamChannelInfo(String channelName) {
+    return ref
+        .read(streamChannelInfoListProvider.notifier)
+        .getStreamChannelInfo(channelName);
+  }
+
+  void put(String channelName, StreamChannel streamChannel) {
+    ref
+        .read(streamChannelInfoListProvider.notifier)
+        .put(channelName, streamChannel);
+  }
+
+  void remove(String channelName) {
+    ref.read(streamChannelInfoListProvider.notifier).remove(channelName);
+  }
+
+  void updateStreamChannelInfo(
+    String channelName, {
+    StreamChannel? streamChannel,
+    bool? joined,
+    Set<String>? joinedTopic,
+    Set<String>? subscribeTopic,
+    Set<String>? userList,
+    List<MessageEvent>? receivedMessages,
+  }) {
+    ref.read(streamChannelInfoListProvider.notifier).updateStreamChannelInfo(
+          channelName,
+          streamChannel: streamChannel,
+          joined: joined,
+          joinedTopic: joinedTopic,
+          subscribeTopic: subscribeTopic,
+          userList: userList,
+          receivedMessages: receivedMessages,
+        );
   }
 }
 
+/// RtmChat Example
 class RtmChat extends StatelessWidget {
   const RtmChat({Key? key}) : super(key: key);
 
@@ -117,7 +155,7 @@ class RtmChat extends StatelessWidget {
     late Widget page;
     switch (settings.name) {
       case '/':
-        page = RtmChatConsumerWidget();
+        page = const RtmChatConsumerWidget();
         break;
       case 'StreamChannelPage':
         final arguments = settings.arguments as Map<String, dynamic>;
@@ -144,13 +182,10 @@ class RtmChat extends StatelessWidget {
         initialRoute: '/',
         onGenerateRoute: _onGenerateRoute,
       );
-
-      // return RtmChatConsumerWidget();
     }));
   }
 }
 
-/// RtmChat Example
 class RtmChatConsumerWidget extends ConsumerStatefulWidget {
   /// Construct the [RtmChat]
   const RtmChatConsumerWidget({Key? key}) : super(key: key);
@@ -170,7 +205,7 @@ class _RtmChatConsumerWidgetState extends ConsumerState<RtmChatConsumerWidget> {
   late TextEditingController _tokenController;
   late TextEditingController _rtmChannelNameController;
 
-  Map<String, StreamChannel> _streamChannel = {};
+  final Map<String, StreamChannel> _streamChannel = {};
 
   late final RtmChatModel _rtmChatModel;
 
@@ -180,22 +215,25 @@ class _RtmChatConsumerWidgetState extends ConsumerState<RtmChatConsumerWidget> {
 
     _userIdController = TextEditingController();
 
-    _tokenController =
-        TextEditingController(text: '');
+    _tokenController = TextEditingController(text: '');
     _rtmChannelNameController = TextEditingController();
 
-    _rtmChatModel = RtmChatModel();
+    _rtmChatModel = RtmChatModel(ref);
 
     _init();
   }
 
   @override
   void dispose() {
-    super.dispose();
     _dispose();
+    super.dispose();
   }
 
   Future<void> _dispose() async {
+    _userIdController.dispose();
+    _tokenController.dispose();
+    _rtmChannelNameController.dispose();
+
     for (final sc in _streamChannel.values) {
       await sc.release();
     }
@@ -221,16 +259,12 @@ class _RtmChatConsumerWidgetState extends ConsumerState<RtmChatConsumerWidget> {
         onMessageEvent: (MessageEvent event) {
           logSink.log('[onMessageEvent] event: ${event.toJson()}');
 
-          final info = ref
-              .read(_rtmChatModel.streamChannelInfoListProvider.notifier)
-              .getStreamChannelInfo(event.channelName!);
+          final info = _rtmChatModel.getStreamChannelInfo(event.channelName!);
           final receivedMessages = info.receivedMessages;
-          receivedMessages.add(utf8.decode(event.message!));
+          receivedMessages.add(event);
 
-          ref
-              .read(_rtmChatModel.streamChannelInfoListProvider.notifier)
-              .updateStreamChannelInfo(event.channelName!,
-                  receivedMessages: receivedMessages);
+          _rtmChatModel.updateStreamChannelInfo(event.channelName!,
+              receivedMessages: receivedMessages);
         },
         onPresenceEvent: (PresenceEvent event) {
           logSink.log('[onPresenceEvent] event: ${event.toJson()}');
@@ -239,46 +273,38 @@ class _RtmChatConsumerWidgetState extends ConsumerState<RtmChatConsumerWidget> {
             StreamChannelErrorCode errorCode) {
           logSink.log(
               '[onJoinResult] channelName: $channelName, userId: $userId, errorCode: $errorCode');
-          ref
-              .read(_rtmChatModel.streamChannelInfoListProvider.notifier)
-              .updateStreamChannelInfo(channelName, joined: true);
+
+          _rtmChatModel.updateStreamChannelInfo(channelName, joined: true);
         },
         onLeaveResult: (String channelName, String userId,
             StreamChannelErrorCode errorCode) {
           logSink.log(
               '[onLeaveResult] channelName: $channelName, userId: $userId, errorCode: $errorCode');
 
-          ref
-              .read(_rtmChatModel.streamChannelInfoListProvider.notifier)
-              .updateStreamChannelInfo(channelName, joined: false);
+          _rtmChatModel.updateStreamChannelInfo(channelName, joined: false);
         },
         onJoinTopicResult: (String channelName, String userId, String topic,
             String meta, StreamChannelErrorCode errorCode) {
           logSink.log(
               '[onJoinTopicResult] channelName: $channelName, userId: $userId, topic: $topic, meta: $meta, errorCode: $errorCode');
 
-          final pre = ref
-              .read(_rtmChatModel.streamChannelInfoListProvider.notifier)
-              .getStreamChannelInfo(channelName);
+          final pre = _rtmChatModel.getStreamChannelInfo(channelName);
           final joinedTopic = {...pre.joinedTopic, topic};
-          ref
-              .read(_rtmChatModel.streamChannelInfoListProvider.notifier)
-              .updateStreamChannelInfo(channelName, joinedTopic: joinedTopic);
+
+          _rtmChatModel.updateStreamChannelInfo(channelName,
+              joinedTopic: joinedTopic);
         },
         onLeaveTopicResult: (String channelName, String userId, String topic,
             String meta, StreamChannelErrorCode errorCode) {
           logSink.log(
               '[onTopicSubscribed] channelName: $channelName, userId: $userId, topic: $topic, meta: $meta, errorCode: $errorCode');
 
-          final pre = ref
-              .read(_rtmChatModel.streamChannelInfoListProvider.notifier)
-              .getStreamChannelInfo(channelName);
+          final pre = _rtmChatModel.getStreamChannelInfo(channelName);
           final joinedTopic = pre.joinedTopic;
           joinedTopic.removeWhere((element) => element == topic);
 
-          ref
-              .read(_rtmChatModel.streamChannelInfoListProvider.notifier)
-              .updateStreamChannelInfo(channelName, joinedTopic: joinedTopic);
+          _rtmChatModel.updateStreamChannelInfo(channelName,
+              joinedTopic: joinedTopic);
         },
         onTopicSubscribed: (String channelName,
             String userId,
@@ -289,15 +315,11 @@ class _RtmChatConsumerWidgetState extends ConsumerState<RtmChatConsumerWidget> {
           logSink.log(
               '[onTopicSubscribed] channelName: $channelName, userId: $userId, topic: $topic, succeedUsers: ${succeedUsers.toJson()}, failedUsers: ${failedUsers.toJson()}, errorCode: $errorCode');
 
-          final pre = ref
-              .read(_rtmChatModel.streamChannelInfoListProvider.notifier)
-              .getStreamChannelInfo(channelName);
+          final pre = _rtmChatModel.getStreamChannelInfo(channelName);
           final subscribeTopic = {...pre.subscribeTopic, topic};
 
-          ref
-              .read(_rtmChatModel.streamChannelInfoListProvider.notifier)
-              .updateStreamChannelInfo(channelName,
-                  subscribeTopic: subscribeTopic);
+          _rtmChatModel.updateStreamChannelInfo(channelName,
+              subscribeTopic: subscribeTopic);
         },
         onTopicUnsubscribed: (String channelName,
             String userId,
@@ -308,16 +330,12 @@ class _RtmChatConsumerWidgetState extends ConsumerState<RtmChatConsumerWidget> {
           logSink.log(
               '[onTopicUnsubscribed] channelName: $channelName, userId: $userId, topic: $topic, succeedUsers: ${succeedUsers.toJson()}, failedUsers: ${failedUsers.toJson()}, errorCode: $errorCode');
 
-          final pre = ref
-              .read(_rtmChatModel.streamChannelInfoListProvider.notifier)
-              .getStreamChannelInfo(channelName);
+          final pre = _rtmChatModel.getStreamChannelInfo(channelName);
           final subscribeTopic = pre.subscribeTopic;
           subscribeTopic.removeWhere((element) => element == topic);
 
-          ref
-              .read(_rtmChatModel.streamChannelInfoListProvider.notifier)
-              .updateStreamChannelInfo(channelName,
-                  subscribeTopic: subscribeTopic);
+          _rtmChatModel.updateStreamChannelInfo(channelName,
+              subscribeTopic: subscribeTopic);
         },
         onConnectionStateChange: (String channelName, RtmConnectionState state,
             RtmConnectionChangeReason reason) {
@@ -327,7 +345,7 @@ class _RtmChatConsumerWidgetState extends ConsumerState<RtmChatConsumerWidget> {
       ),
     ));
 
-    ref.read(_rtmChatModel.isRtmClientInit.notifier).state = true;
+    _rtmChatModel.setRtmClientInit(true);
   }
 
   @override
@@ -349,10 +367,14 @@ class _RtmChatConsumerWidgetState extends ConsumerState<RtmChatConsumerWidget> {
                     child: Row(
                       mainAxisSize: MainAxisSize.max,
                       children: [
-                        Text(streamChannel.channelName),
+                        Expanded(child: Text(streamChannel.channelName)),
                         IconButton(
                           onPressed: () async {
-                            await streamChannel.streamChannel.leave();
+                            await streamChannel.streamChannel.release();
+
+                            _streamChannel.remove(streamChannel.channelName);
+
+                            _rtmChatModel.remove(streamChannel.channelName);
                           },
                           icon: const Icon(Icons.close),
                         ),
@@ -379,7 +401,9 @@ class _RtmChatConsumerWidgetState extends ConsumerState<RtmChatConsumerWidget> {
                           position: Tween<Offset>(
                             begin: const Offset(0.0, 1.0),
                             end: Offset.zero,
-                          ).animate(animation),
+                          )
+                              .chain(CurveTween(curve: Curves.ease))
+                              .animate(animation),
                           child: child,
                         );
                       }),
@@ -395,7 +419,6 @@ class _RtmChatConsumerWidgetState extends ConsumerState<RtmChatConsumerWidget> {
         return Consumer(
           builder: (context, ref, child) {
             final isInit = ref.watch(_rtmChatModel.isRtmClientInit);
-            debugPrint('isInit: $isInit');
 
             return Column(
               mainAxisAlignment: MainAxisAlignment.start,
@@ -424,7 +447,7 @@ class _RtmChatConsumerWidgetState extends ConsumerState<RtmChatConsumerWidget> {
                             : () {
                                 _initRtmClient();
                               },
-                        child: Text('Initialize'),
+                        child: const Text('Initialize'),
                       ),
                     )
                   ],
@@ -447,14 +470,11 @@ class _RtmChatConsumerWidgetState extends ConsumerState<RtmChatConsumerWidget> {
                           final streamChannel =
                               await _rtmClient.createStreamChannel(channelName);
 
-                          ref
-                              .read(_rtmChatModel
-                                  .streamChannelInfoListProvider.notifier)
-                              .put(channelName, streamChannel);
+                          _rtmChatModel.put(channelName, streamChannel);
 
                           _streamChannel[channelName] = streamChannel;
                         },
-                        child: Text('Create StreamChannel'),
+                        child: const Text('Create StreamChannel'),
                       ),
                     )
                   ],
@@ -465,7 +485,6 @@ class _RtmChatConsumerWidgetState extends ConsumerState<RtmChatConsumerWidget> {
         );
       },
     );
-    // if (!_isInit) return Container();
   }
 }
 
@@ -516,13 +535,12 @@ class _StreamChannelPageState extends State<StreamChannelPage> {
 
   @override
   void dispose() {
-    super.dispose();
-    _dispose();
-  }
+    _topicController.dispose();
+    _topicMessageController.dispose();
+    _subscribeTopicController.dispose();
+    _subscribeUserController.dispose();
 
-  Future<void> _dispose() async {
-    // await _engine.leaveChannel();
-    // await _engine.release();
+    super.dispose();
   }
 
   @override
@@ -538,6 +556,7 @@ class _StreamChannelPageState extends State<StreamChannelPage> {
                 flex: 2,
                 child: Container(
                   color: Colors.grey[200],
+                  padding: const EdgeInsets.only(left: 16, right: 16),
                   child: Consumer(
                     builder: (context, ref, child) {
                       final streamChannelInfos = ref
@@ -546,12 +565,41 @@ class _StreamChannelPageState extends State<StreamChannelPage> {
                       final streamChannelInfo =
                           streamChannelInfos[_channelName]!;
 
-                      return ListView.builder(
-                        itemBuilder: (context, index) {
-                          return Text(
-                              streamChannelInfo.receivedMessages[index]);
-                        },
-                        itemCount: streamChannelInfo.receivedMessages.length,
+                      return Column(
+                        mainAxisSize: MainAxisSize.max,
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                              'Channel Name: ${streamChannelInfo.channelName}'),
+                          ListView.builder(
+                            shrinkWrap: true,
+                            itemBuilder: (context, index) {
+                              final message =
+                                  streamChannelInfo.receivedMessages[index];
+                              return Column(
+                                  mainAxisSize: MainAxisSize.min,
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text('channelType: ${message.channelType}'),
+                                    Text('channelName: ${message.channelName}'),
+                                    Text(
+                                        'channelTopic: ${message.channelTopic}'),
+                                    Text('message: ${message.message}'),
+                                    Text(
+                                        'messageLength: ${message.messageLength}'),
+                                    Text('publisher: ${message.publisher}'),
+                                    Container(
+                                      color: Colors.black12,
+                                      height: 1,
+                                    ),
+                                  ]);
+                            },
+                            itemCount:
+                                streamChannelInfo.receivedMessages.length,
+                          ),
+                        ],
                       );
                     },
                   ),
@@ -569,176 +617,248 @@ class _StreamChannelPageState extends State<StreamChannelPage> {
 
                       final streamChannel = streamChannelInfo!.streamChannel;
 
-                      return Column(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          ElevatedButton(
-                            onPressed: () async {
-                              if (streamChannelInfo.joined) {
-                                await streamChannel.leave();
-                              } else {
-                                await streamChannel
-                                    .join(JoinChannelOptions(token: _token));
-                              }
-                            },
-                            child: Text(
-                                '${streamChannelInfo.joined ? 'Leave' : 'Join'} rtm channel'),
-                          ),
-                          const SizedBox(
-                            height: 20,
-                          ),
-                          Row(
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              Expanded(
-                                child: TextField(
-                                  controller: _topicController,
-                                  decoration: const InputDecoration(
-                                      hintText: 'Input topic name'),
+                      return Container(
+                        margin: const EdgeInsets.only(left: 16, right: 16),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            const SizedBox(
+                              height: 20,
+                            ),
+                            ElevatedButton(
+                              onPressed: () async {
+                                if (streamChannelInfo.joined) {
+                                  await streamChannel.leave();
+                                } else {
+                                  await streamChannel
+                                      .join(JoinChannelOptions(token: _token));
+                                }
+                              },
+                              child: Text(
+                                  '${streamChannelInfo.joined ? 'Leave' : 'Join'} rtm channel'),
+                            ),
+                            const SizedBox(
+                              height: 20,
+                            ),
+                            const Text(
+                              'Topic Name',
+                              style: TextStyle(
+                                fontSize: 20,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                            Row(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                Expanded(
+                                  child: TextField(
+                                    controller: _topicController,
+                                    decoration: const InputDecoration(
+                                        hintText: 'Input topic name'),
+                                  ),
                                 ),
-                              ),
-                              ElevatedButton(
-                                onPressed: () {
-                                  streamChannel.joinTopic(
-                                      topic: _topicController.text,
-                                      options: const JoinTopicOptions());
-                                },
-                                child: Text('Join topic'),
-                              ),
-                              ElevatedButton(
-                                onPressed: () {
-                                  streamChannel
-                                      .leaveTopic(_topicController.text);
-                                },
-                                child: Text('Leave topic'),
-                              ),
-                            ],
-                          ),
-                          Row(
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              Expanded(
-                                child: TextField(
-                                  controller: _subscribeUserController,
-                                  decoration: const InputDecoration(
-                                      hintText: 'Input user name'),
+                                ElevatedButton(
+                                  onPressed: streamChannelInfo.joined
+                                      ? () {
+                                          streamChannel.joinTopic(
+                                              topic: _topicController.text,
+                                              options:
+                                                  const JoinTopicOptions());
+                                        }
+                                      : null,
+                                  child: const Text('Join'),
                                 ),
+                                ElevatedButton(
+                                  onPressed: streamChannelInfo.joined
+                                      ? () {
+                                          streamChannel.leaveTopic(
+                                              _topicController.text);
+                                        }
+                                      : null,
+                                  child: const Text('Leave'),
+                                ),
+                              ],
+                            ),
+                            const SizedBox(
+                              height: 20,
+                            ),
+                            const Text(
+                              'User List',
+                              style: TextStyle(
+                                fontSize: 20,
+                                fontWeight: FontWeight.bold,
                               ),
-                              ElevatedButton(
-                                onPressed: () {
-                                  final userList = streamChannelInfo.userList;
-                                  userList.add(_subscribeUserController.text);
+                            ),
+                            Row(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                Expanded(
+                                  child: TextField(
+                                    controller: _subscribeUserController,
+                                    decoration: const InputDecoration(
+                                        hintText: 'Input user name'),
+                                  ),
+                                ),
+                                ElevatedButton(
+                                  onPressed: streamChannelInfo.joined
+                                      ? () {
+                                          final userList =
+                                              streamChannelInfo.userList;
+                                          userList.add(
+                                              _subscribeUserController.text);
 
-                                  ref
-                                      .read(_rtmChatModel
-                                          .streamChannelInfoListProvider
-                                          .notifier)
-                                      .updateStreamChannelInfo(
-                                          streamChannelInfo.channelName,
-                                          userList: userList);
-                                },
-                                child: Text('Add'),
-                              ),
-                              ElevatedButton(
-                                onPressed: () {
-                                  final userList = streamChannelInfo.userList;
-                                  userList.removeWhere((element) =>
-                                      element == _subscribeUserController.text);
+                                          ref
+                                              .read(_rtmChatModel
+                                                  .streamChannelInfoListProvider
+                                                  .notifier)
+                                              .updateStreamChannelInfo(
+                                                  streamChannelInfo.channelName,
+                                                  userList: userList);
+                                        }
+                                      : null,
+                                  child: const Text('Add'),
+                                ),
+                                ElevatedButton(
+                                  onPressed: streamChannelInfo.joined
+                                      ? () {
+                                          final userList =
+                                              streamChannelInfo.userList;
+                                          userList.removeWhere((element) =>
+                                              element ==
+                                              _subscribeUserController.text);
 
-                                  ref
-                                      .read(_rtmChatModel
-                                          .streamChannelInfoListProvider
-                                          .notifier)
-                                      .updateStreamChannelInfo(
-                                          streamChannelInfo.channelName,
-                                          userList: userList);
-                                },
-                                child: Text('Remove'),
-                              ),
-                            ],
-                          ),
-                          Wrap(
-                            children: [
-                              for (final u in streamChannelInfo.userList)
-                                Container(
-                                  decoration: BoxDecoration(
-                                      color: Colors.green[200]!,
-                                      border: Border.all(
+                                          ref
+                                              .read(_rtmChatModel
+                                                  .streamChannelInfoListProvider
+                                                  .notifier)
+                                              .updateStreamChannelInfo(
+                                                  streamChannelInfo.channelName,
+                                                  userList: userList);
+                                        }
+                                      : null,
+                                  child: const Text('Remove'),
+                                ),
+                              ],
+                            ),
+                            const SizedBox(
+                              height: 10,
+                            ),
+                            Wrap(
+                              spacing: 10,
+                              children: [
+                                for (final u in streamChannelInfo.userList)
+                                  Container(
+                                    decoration: BoxDecoration(
                                         color: Colors.green[200]!,
-                                      ),
-                                      borderRadius: const BorderRadius.all(
-                                          Radius.circular(20))),
-                                  padding: const EdgeInsets.all(8),
-                                  child: Text(u),
+                                        border: Border.all(
+                                          color: Colors.green[200]!,
+                                        ),
+                                        borderRadius: const BorderRadius.all(
+                                            Radius.circular(20))),
+                                    padding: const EdgeInsets.all(8),
+                                    child: Text(u),
+                                  ),
+                              ],
+                            ),
+                            const SizedBox(
+                              height: 20,
+                            ),
+                            const Text(
+                              'Subscribe Topic',
+                              style: TextStyle(
+                                fontSize: 20,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                            Row(
+                              children: [
+                                Expanded(
+                                  child: TextField(
+                                    controller: _subscribeTopicController,
+                                    decoration: const InputDecoration(
+                                        hintText:
+                                            'Intput subscribe topic name'),
+                                  ),
                                 ),
-                            ],
-                          ),
-                          Row(
-                            children: [
-                              Expanded(
-                                child: TextField(
-                                  controller: _subscribeTopicController,
-                                  decoration: const InputDecoration(
-                                      hintText: 'Intput subscribe topic name'),
+                                ElevatedButton(
+                                  onPressed: streamChannelInfo.joined
+                                      ? () {
+                                          streamChannel.subscribeTopic(
+                                              topic: _subscribeTopicController
+                                                  .text,
+                                              options: TopicOptions(
+                                                  users: streamChannelInfo
+                                                      .userList
+                                                      .toList(),
+                                                  userCount: streamChannelInfo
+                                                      .userList.length));
+                                        }
+                                      : null,
+                                  child: const Text('Subscribe'),
                                 ),
-                              ),
-                              ElevatedButton(
-                                onPressed: () {
-                                  streamChannel.subscribeTopic(
-                                      topic: _subscribeTopicController.text,
-                                      options: TopicOptions(
-                                          users: streamChannelInfo.userList
-                                              .toList(),
-                                          userCount: streamChannelInfo
-                                              .userList.length));
-                                },
-                                child: Text('Subscribe topic'),
-                              ),
-                              ElevatedButton(
-                                onPressed: () {
-                                  streamChannel.unsubscribeTopic(
-                                      topic: _subscribeTopicController.text,
-                                      options: TopicOptions(
-                                          users: streamChannelInfo.userList
-                                              .toList(),
-                                          userCount: streamChannelInfo
-                                              .userList.length));
-                                },
-                                child: Text('unsubscribe topic'),
-                              ),
-                            ],
-                          ),
-                          const SizedBox(
-                            height: 20,
-                          ),
-                          Row(
-                            children: [
-                              Expanded(
-                                flex: 1,
-                                child: TextField(
-                                  controller: _topicMessageController,
-                                  decoration: const InputDecoration(
-                                      hintText: 'Input topic message'),
+                                ElevatedButton(
+                                  onPressed: streamChannelInfo.joined
+                                      ? () {
+                                          streamChannel.unsubscribeTopic(
+                                              topic: _subscribeTopicController
+                                                  .text,
+                                              options: TopicOptions(
+                                                  users: streamChannelInfo
+                                                      .userList
+                                                      .toList(),
+                                                  userCount: streamChannelInfo
+                                                      .userList.length));
+                                        }
+                                      : null,
+                                  child: const Text('Unsubscribe'),
                                 ),
+                              ],
+                            ),
+                            const SizedBox(
+                              height: 20,
+                            ),
+                            const Text(
+                              'Topic message',
+                              style: TextStyle(
+                                fontSize: 20,
+                                fontWeight: FontWeight.bold,
                               ),
-                              ElevatedButton(
-                                onPressed: () {
-                                  final message = Uint8List.fromList(
-                                      utf8.encode(_topicController.text));
+                            ),
+                            Row(
+                              children: [
+                                Expanded(
+                                  flex: 1,
+                                  child: TextField(
+                                    controller: _topicMessageController,
+                                    decoration: const InputDecoration(
+                                        hintText: 'Input topic message'),
+                                  ),
+                                ),
+                                ElevatedButton(
+                                  onPressed: streamChannelInfo.joined
+                                      ? () {
+                                          final message = Uint8List.fromList(
+                                              utf8.encode(
+                                                  _topicController.text));
 
-                                  streamChannel.publishTopicMessage(
-                                    topic: _topicController.text,
-                                    message: message,
-                                    length: message.length,
-                                  );
-                                },
-                                child: Text('Send topic message'),
-                              ),
-                            ],
-                          ),
-                        ],
+                                          streamChannel.publishTopicMessage(
+                                            topic: _topicController.text,
+                                            message: message,
+                                            length: message.length,
+                                          );
+                                        }
+                                      : null,
+                                  child: const Text('Send'),
+                                ),
+                              ],
+                            ),
+                            const SizedBox(
+                              height: 20,
+                            ),
+                          ],
+                        ),
                       );
                     },
                   ),
@@ -753,10 +873,8 @@ class _StreamChannelPageState extends State<StreamChannelPage> {
               Navigator.pop(context);
             },
           ),
-        )
+        ),
       ],
     );
-
-    // if (!_isInit) return Container();
   }
 }

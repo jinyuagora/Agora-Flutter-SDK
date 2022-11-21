@@ -5,7 +5,12 @@ part 'agora_rtm_client.g.dart';
 @JsonSerializable(explicitToJson: true, includeIfNull: false)
 class RtmConfig {
   /// @nodoc
-  const RtmConfig({this.appId, this.userId, this.eventHandler, this.logConfig});
+  const RtmConfig(
+      {this.appId,
+      this.userId,
+      this.useStringUserId,
+      this.eventHandler,
+      this.logConfig});
 
   /// @nodoc
   @JsonKey(name: 'appId')
@@ -14,6 +19,10 @@ class RtmConfig {
   /// @nodoc
   @JsonKey(name: 'userId')
   final String? userId;
+
+  /// @nodoc
+  @JsonKey(name: 'useStringUserId')
+  final bool? useStringUserId;
 
   /// @nodoc
   @JsonKey(name: 'eventHandler', ignore: true)
