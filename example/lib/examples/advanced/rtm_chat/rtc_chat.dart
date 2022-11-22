@@ -553,7 +553,6 @@ class _StreamChannelPageState extends State<StreamChannelPage> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Expanded(
-                flex: 2,
                 child: Container(
                   color: Colors.grey[200],
                   padding: const EdgeInsets.only(left: 16, right: 16),
@@ -605,7 +604,6 @@ class _StreamChannelPageState extends State<StreamChannelPage> {
                   ),
                 )),
             Expanded(
-                flex: 1,
                 child: SingleChildScrollView(
                   child: Consumer(
                     builder: (context, ref, child) {
